@@ -1,0 +1,39 @@
+{
+    "usuarios": [
+      {
+        "id": "1",
+        "nome": "principal",
+        "email": "principal@gmail.com",
+        "senha": "1234",
+        "tipo": "Administrador"
+      },
+      {
+        "id": "099f",
+        "nome": "Gregory",
+        "email": "gregory@gmail.com",
+        "senha": "1234",
+        "tipo": "Administrador"
+      },
+      {
+        "id": "0bea",
+        "nome": "Cris",
+        "email": "cr7@gmail.com",
+        "senha": "cr7",
+        "tipo": "Administrador"
+      },
+      {
+        "id": "9462",
+        "nome": "Messi",
+        "email": "messi@gmail.com",
+        "senha": "1234",
+        "tipo": "Gerente"
+      },
+      {
+        "id": "7385",
+        "nome": "Maurício",
+        "email": "maurício@gmail.com",
+        "senha": "123456789",
+        "tipo": "Gerente"
+      }
+    ]
+  }

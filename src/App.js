@@ -1,23 +1,18 @@
 import logo from './logo.svg';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+//Importar o gerenciador de tarefas
+import { BrowserRouter, Route, Routes } from "react-router-dom"
+
+import NavBarra from "./components/NavBarra";
+import Login from "./pages/Login";
+import CadastrarObjeto from "./pages/CadastrarObjeto";
+import RetirarObjeto from "./pages/RetirarObjeto";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
     </div>
   );
 }
