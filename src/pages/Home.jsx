@@ -1,5 +1,7 @@
 import styles from './Home.module.css';
 import CartaoObjeto from "../components/CartaoObjeto";
+
+
 const Home = () => {
   const objects = [
     { name: 'Garrafa Stanley', status: 'Achado' },
