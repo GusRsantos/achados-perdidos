@@ -1,0 +1,33 @@
+.card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .image {
+    height: 100px;
+    background-color: #eaeaea;
+    margin-bottom: 10px;
+  }
+  
+  .achado {
+    color: green;
+  }
+  
+  .perdido {
+    color: red;
+  }
+  
+  .selectButton {
+    background-color: #003366;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .selectButton:hover {
+    background-color: #00509e;
+  }

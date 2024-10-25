@@ -1,0 +1,33 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #003366;
+  }
+  
+  .logo img {
+    height: 50px;
+  }
+  
+  .searchBar {
+    width: 300px;
+    padding: 5px;
+  }
+  
+  .hamburguerMenu {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 24px;
+  }
+  
+  .navLinks {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .navLinks a {
+    color: white;
+    text-decoration: none;
+  }
