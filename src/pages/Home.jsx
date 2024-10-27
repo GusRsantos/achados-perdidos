@@ -1,6 +1,7 @@
 import styles from './Home.module.css';
 import CartaoObjeto from "../components/CartaoObjeto";
 
+const url = "http://localhost:5000/usuario";
 
 const Home = () => {
   const objects = [

@@ -6,9 +6,10 @@
     background-color: #003366;
   }
   
-  .logo img {
-    height: 50px;
-  }
+  .logo {
+    width: 150px; /* Ajuste a largura conforme necessário */
+    height: auto; /* Mantém a proporção da imagem */
+}
   
   .searchBar {
     width: 300px;

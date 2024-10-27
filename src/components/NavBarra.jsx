@@ -7,6 +7,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import React from 'react';
 import styles from './NavBarra.module.css';
+import logo from "../images/logo-senai.png";
 
 const NavBarra = () => {
   return (
@@ -16,7 +17,7 @@ const NavBarra = () => {
       {[false].map((expand) => (
         <Navbar  key={expand} expand={expand} className={styles.navbar}>
           <Container fluid>
-          <img src="/logo.svg" alt="Logo Senai"/>
+        <img src={logo} alt="Logo Senai" className={styles.logo} />
             <input type="text" placeholder="Buscar..." className={styles.searchBar} />
             <Navbar.Toggle aria-controls="basic-navbar-nav" className={styles.toggle}/>
             <Navbar.Offcanvas
@@ -29,8 +30,7 @@ const NavBarra = () => {
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
                   <Nav.Link href="#action1">Perfil</Nav.Link>
-                  <Nav.Link href="#action2">Usuários</Nav.Link>
-                  
+                  <Nav.Link href="/login">Sair</Nav.Link>
                 </Nav>
               </Offcanvas.Body>
             </Navbar.Offcanvas>
