@@ -1,39 +1,43 @@
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background-color: #003366;
-  }
-  
-  .logo {
-    width: 150px; /* Ajuste a largura conforme necessário */
-    height: auto; /* Mantém a proporção da imagem */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #003366;
 }
-  
-  .searchBar {
-    width: 300px;
-    padding: 5px;
-  }
 
-  .toggle {
+.logo {
+  width: 200px; /* Ajuste a largura conforme necessário */
+  height: auto; /* Mantém a proporção da imagem */
+}
+
+.searchBar {
+  width: 300px;
+  padding: 5px;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' fill='red' viewBox='0 0 30 30'%3E%3Cpath stroke='red' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E"); /* Ajuste 'red' pela cor desejada */
+}  
+
+.toggle {
 
 
-  }
-  
-  .hamburguerMenu {
-    display: none;
-    background: none;
-    border: none;
-    font-size: 24px;
-  }
-  
-  .navLinks {
-    display: flex;
-    gap: 20px;
-  }
-  
-  .navLinks a {
-    color: white;
-    text-decoration: none;
-  }
+}
+
+.hamburguerMenu {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+}
+
+.navLinks {
+  display: flex;
+  gap: 20px;
+}
+
+.navLinks a {
+  color: white;
+  text-decoration: none;
+}

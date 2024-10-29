@@ -1,25 +1,25 @@
+import React from 'react';
 import styles from './Home.module.css';
-import CartaoObjeto from "../components/CartaoObjeto";
+import logo from "../images/logo-senai.png"; // Importe sua logo
 
-const url = "http://localhost:5000/usuario";
-
-const Home = () => {
-  const objects = [
-    { name: 'Garrafa Stanley', status: 'Achado' },
-    { name: 'Garrafa Farm', status: 'Perdido' },
-    // Outros objetos
-  ];
-
+function Home() {
   return (
     <div className={styles.container}>
-      <h1>Achados e Perdidos</h1>
-      <div className={styles.cards}>
-        {objects.map((obj, index) => (
-          <CartaoObjeto key={index} name={obj.name} status={obj.status}/>
-        ))}
+      <div className={styles.header}>
+        <img src={logo} alt="Logo Senai" className={styles.logo} />
+        <div className={styles.searchContainer}>
+          <i className="bi bi-search" style={{ color: 'blue', marginRight: '8px' }}></i>
+          <input type="text" placeholder="Buscar..." className={styles.searchInput} />
+        </div>
       </div>
+
+      {/* Adicionando a linha abaixo do cabeçalho */}
+      <hr className={styles.divider} />
+
+      {/* Botão "+ OBJETO" */}
+      <button className={styles.addButton}>+ OBJETO</button>
     </div>
   );
-};
+}
 
 export default Home;
