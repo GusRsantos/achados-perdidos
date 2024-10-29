@@ -1,9 +1,46 @@
 .container {
-    padding: 20px;
-  }
-  
-  .cards {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-  }
+  padding: 20px; /* Ajuste conforme necessário */
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Espaço entre logo e barra de pesquisa */
+}
+
+.logo {
+  width: 150px; /* Ajuste o tamanho conforme seu gosto */
+  height: auto; /* Mantém a proporção */
+}
+
+.searchContainer {
+  display: flex;
+  align-items: center; /* Centraliza verticalmente */
+}
+
+.searchInput {
+  border: 1px solid #ccc; /* Borda da barra de pesquisa */
+  border-radius: 20px; /* Bordas arredondadas */
+  padding: 10px; /* Espaçamento interno */
+  width: 300px; /* Ajuste a largura conforme necessário */
+}
+
+.divider {
+  border: none; /* Remove a borda padrão */
+  border-top: 1px solid #ccc; /* Borda da linha */
+  margin: 20px 0; /* Margem acima e abaixo da linha */
+}
+
+.addButton {
+  background-color: #007bff; /* Cor de fundo do botão */
+  color: white; /* Cor do texto do botão */
+  border: none; /* Remove a borda padrão */
+  border-radius: 20px; /* Bordas arredondadas */
+  padding: 10px 20px; /* Espaçamento interno */
+  cursor: pointer; /* Muda o cursor ao passar o mouse */
+  font-size: 16px; /* Tamanho da fonte */
+}
+
+.addButton:hover {
+  background-color: #0056b3; /* Cor do botão ao passar o mouse */
+}
