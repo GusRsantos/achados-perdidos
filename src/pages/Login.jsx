@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; // Alá ó!
 import styles from './Login.module.css';
 import logo from '../images/logo-senai.png'; // Certifique-se de que o caminho está correto
 
@@ -41,4 +41,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Login; 
