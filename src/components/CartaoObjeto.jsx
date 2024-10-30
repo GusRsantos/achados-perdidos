@@ -1,9 +1,10 @@
-import React from 'react'
-import styles from "./CartaoObjeto.module.css";
+import React from 'react';
+import styles from './CartaoObjeto.module.css';
+
 const CartaoObjeto = ({ name, status }) => {
   return (
     <div className={styles.card}>
- <div className={styles.image}>Foto do objeto</div>
+      <div className={styles.image}>Foto do objeto</div>
       <h3>{name}</h3>
       <p className={status === 'Achado' ? styles.achado : styles.perdido}>
         {status}
@@ -13,4 +14,4 @@ const CartaoObjeto = ({ name, status }) => {
   );
 };
 
-export default CartaoObjeto
+export default CartaoObjeto;
