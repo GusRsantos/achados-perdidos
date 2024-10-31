@@ -16,9 +16,14 @@
   max-width: 400px;
 }
 
+.logoContainer {
+  margin-bottom: 2rem;
+}
+
 .logo {
   width: 200px;
-  margin-bottom: 2rem;
+  max-width: 100%;
+  height: auto;
 }
 
 .input {

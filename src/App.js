@@ -1,11 +1,14 @@
+import React from 'react';
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+
 import NavBarra from "./components/NavBarra";
 import Login from "./pages/Login";
 import CadastrarObjeto from "./pages/CadastrarObjeto";
 import RetirarObjeto from "./pages/RetirarObjeto";
 import Home from './pages/Home';
+import InfoObjetos from './pages/InfoObjetos';
 
 // Componente para proteger rotas
 const ProtectedRoute = ({ children }) => {
@@ -32,6 +35,15 @@ function App() {
               <ProtectedRoute>
                 <NavBarra />
                 <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/info-objeto/:id"
+            element={
+              <ProtectedRoute>
+                <NavBarra />
+                <InfoObjetos />
               </ProtectedRoute>
             }
           />

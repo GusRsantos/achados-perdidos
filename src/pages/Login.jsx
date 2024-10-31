@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './Login.module.css';
-import logo from '../images/logo-senai.png';
 import { Form, Button, Alert } from 'react-bootstrap';
+import styles from './Login.module.css';
+import logo from '../images/logo-senai.png'; // Certifique-se de que o caminho está correto
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -40,7 +40,9 @@ function Login() {
   return (
     <div className={styles.container}>
       <Form onSubmit={handleSubmit} className={styles.card}>
-        <img src={logo} alt="Logo Senai" className={styles.logo} />
+        <div className={styles.logoContainer}>
+          <img src={logo} alt="Logo Senai" className={styles.logo} />
+        </div>
         
         {error && (
           <Alert variant="danger" className="mb-3">
