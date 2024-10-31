@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from './CadastrarObjeto.module.css';
+import { useNavigate } from 'react-router-dom';
 
 const url = "http://localhost:5000/usuarios";
 
@@ -10,6 +11,15 @@ const CadastrarObjeto = () => {
   const [horarioEntrada, setHorarioEntrada] = useState('');
   const [observacoes, setObservacoes] = useState('');
   const [foto, setFoto] = useState(null);
+
+  const navigate = useNavigate();
+
+   const handleCancelar = () => {
+    navigate('/home');
+  };
+
+
+
 
   const handleFotoUpload = (e) => {
       setFoto(e.target.files[0]);
@@ -59,6 +69,12 @@ const CadastrarObjeto = () => {
                     onChange={handleFotoUpload}
                 />
                 <button type="submit">Cadastrar</button>
+                 <button 
+                  onClick={handleCancelar}
+                  className={styles.buttonCancelar}
+                > 
+                  Cancelar
+                </button>
             </form>
     </div>
   );

@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Alert } from 'react-bootstrap';
 import styles from './Login.module.css';
-import logo from '../images/logo-senai.png'; // Certifique-se de que o caminho está correto
+import logo from "../images/logo-senai.png";
 
 function Login() {
   const [email, setEmail] = useState('');
+  const [cpf, setCpf] = useState('');
   const [senha, setSenha] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -18,7 +19,7 @@ function Login() {
 
     try {
       // Simulando uma verificação de login
-      if (email === "login@gmail.com" && senha === "12345") {
+      if (cpf === "12345678911" && senha === "12345") {
         // Simulando um delay de rede
         await new Promise(resolve => setTimeout(resolve, 1000));
         
@@ -41,7 +42,7 @@ function Login() {
     <div className={styles.container}>
       <Form onSubmit={handleSubmit} className={styles.card}>
         <div className={styles.logoContainer}>
-          <img src={logo} alt="Logo Senai" className={styles.logo} />
+        <img src={logo} alt="Logo Senai" className={styles.logo}/>
         </div>
         
         {error && (
@@ -54,8 +55,8 @@ function Login() {
           <Form.Control
             type="text"
             placeholder="Digite seu CPF"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={cpf}
+            onChange={(e) => setCpf(e.target.value)}
             disabled={isLoading}
             required
             className={styles.input}

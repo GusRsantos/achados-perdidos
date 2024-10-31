@@ -24,15 +24,30 @@ export default function Home() {
     navigate(`/info-objeto/${objeto.id}`, { state: { objeto } });
   };
 
+  const handleSubmitObject = () => {
+    navigate("/cadastrarobjeto");
+  };
+
+
   return (
     <div className={styles.container}>
       
+
+    {/* <button 
+                onClick={() => handleSelectObject(objeto)}
+                className={styles.selectButton}
+              >
+                Selecionar
+              </button>*/}
+
       {/* Botão adicionar objeto */}
-      <button className={styles.addButton}>+ OBJETO</button>
+      <button  onClick={() => handleSubmitObject()} 
+      className={styles.addButton}>+ OBJETO</button>
 
       {/* Legenda */}
       <div className={styles.legend}>
         <div className={styles.legendItem}>
+       
           <span className={styles.dotAchado}></span>
           Achado
         </div>

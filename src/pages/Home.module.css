@@ -86,6 +86,14 @@
   font-size: 14px;
 }
 
+.legendItem :hover{
+  cursor: pointer;
+  opacity: 0.8;
+
+}
+
+
+
 .dotAchado {
   width: 8px;
   height: 8px;
@@ -101,6 +109,7 @@
   border-radius: 50%;
   display: inline-block;
 }
+
 
 .grid {
   display: grid;

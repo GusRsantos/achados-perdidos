@@ -78,10 +78,10 @@ export default function InfoObjetos() {
                 className={styles.statusInput}
               />
               <div className={styles.buttonGroup}>
-                <button 
+               <button 
                   onClick={handleVoltar}
                   className={styles.buttonVoltar}
-                >
+                > 
                   Voltar
                 </button>
                 <button 
