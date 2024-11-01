@@ -7,6 +7,9 @@ const sugestoes = [
   "Garrafa Farm",
   "Garrafa Pacco"
 ];
+ 
+//só comentando aqui pro vscode não barrar o commit
+//depois vocÊ pode apagar
 
 const objetos = [
   { id: 1, nome: "Garrafa Stanley", status: "Achado" },
@@ -33,14 +36,6 @@ export default function Home() {
     <div className={styles.container}>
       
 
-    {/* <button 
-                onClick={() => handleSelectObject(objeto)}
-                className={styles.selectButton}
-              >
-                Selecionar
-              </button>*/}
-
-      {/* Botão adicionar objeto */}
       <button  onClick={() => handleSubmitObject()} 
       className={styles.addButton}>+ OBJETO</button>
 
