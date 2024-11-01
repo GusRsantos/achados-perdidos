@@ -1,15 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './Home.module.css';
+import CadastrarObjeto from "./CadastrarObjeto";
 
-const sugestoes = [
-  "Garrafa Stanley",
-  "Garrafa Farm",
-  "Garrafa Pacco"
-];
+const url = "http://localhost:5000/usuarios";
+
+
  
-//só comentando aqui pro vscode não barrar o commit
-//depois vocÊ pode apagar
 
 const objetos = [
   { id: 1, nome: "Garrafa Stanley", status: "Achado" },
@@ -18,12 +15,17 @@ const objetos = [
   { id: 4, nome: "Garrafa Tupperware", status: "Perdido" }
 ];
 
+
+
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
   const navigate = useNavigate();
+  
+  //const [objetos, setObjetos] = useState('');
+ 
 
-  const handleSelectObject = (objeto) => {
+const handleSelectObject = (objeto) => {
     navigate(`/info-objeto/${objeto.id}`, { state: { objeto } });
   };
 
@@ -31,12 +33,9 @@ export default function Home() {
     navigate("/cadastrarobjeto");
   };
 
-// GRGRTTRTRDTT
-// AGDGDGDG
   return (
     <div className={styles.container}>
       
-
       <button  onClick={() => handleSubmitObject()} 
       className={styles.addButton}>+ OBJETO</button>
 
@@ -59,6 +58,7 @@ export default function Home() {
           <div key={objeto.id} className={styles.card}>
             <div className={styles.imageContainer}>
               <span className={styles.photoText}>Foto do objeto.</span>
+              
             </div>
             <div className={styles.cardContent}>
               <h3 className={styles.objectName}>{objeto.nome}</h3>
@@ -78,6 +78,7 @@ export default function Home() {
                 onClick={() => handleSelectObject(objeto)}
                 className={styles.selectButton}
               >
+              
                 Selecionar
               </button>
             </div>
