@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { ObjectProvider } from './context/ObjectContext';
 
 import NavBarra from "./components/NavBarra";
 import Login from "./pages/Login";
@@ -10,7 +11,6 @@ import RetirarObjeto from "./pages/RetirarObjeto";
 import Home from './pages/Home';
 import InfoObjetos from './pages/InfoObjetos';
 
-// Componente para proteger rotas
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
   
@@ -24,49 +24,50 @@ const ProtectedRoute = ({ children }) => {
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          
-          {/* Rotas protegidas */}
-          <Route
-            path="/home"
-            element={
-              <ProtectedRoute>
-                <NavBarra />
-                <Home />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/info-objeto/:id"
-            element={
-              <ProtectedRoute>
-                <NavBarra />
-                <InfoObjetos />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/cadastrarobjeto"
-            element={
-              <ProtectedRoute>
-                <NavBarra />
-                <CadastrarObjeto />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/retirarobjeto"
-            element={
-              <ProtectedRoute>
-                <NavBarra />
-                <RetirarObjeto />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </BrowserRouter>
+      <ObjectProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            
+            <Route
+              path="/home"
+              element={
+                <ProtectedRoute>
+                  <NavBarra />
+                  <Home />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/info-objeto/:id"
+              element={
+                <ProtectedRoute>
+                  <NavBarra />
+                  <InfoObjetos />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/cadastrarobjeto"
+              element={
+                <ProtectedRoute>
+                  <NavBarra />
+                  <CadastrarObjeto />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/retirarobjeto"
+              element={
+                <ProtectedRoute>
+                  <NavBarra />
+                  <RetirarObjeto />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </BrowserRouter>
+      </ObjectProvider>
     </div>
   );
 }

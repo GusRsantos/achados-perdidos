@@ -1,31 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './Home.module.css';
-import CadastrarObjeto from "./CadastrarObjeto";
+import { useObjects } from '../context/ObjectContext';
 
-const url = "http://localhost:5000/usuarios";
-
-
- 
-
-const objetos = [
+const objetosOriginais = [
   { id: 1, nome: "Garrafa Stanley", status: "Achado" },
   { id: 2, nome: "Garrafa Farm", status: "Perdido" },
   { id: 3, nome: "Garrafa Pacco", status: "Achado" },
   { id: 4, nome: "Garrafa Tupperware", status: "Perdido" }
 ];
 
-
-
-export default function Home() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [showSuggestions, setShowSuggestions] = useState(false);
+const Home = () => {
   const navigate = useNavigate();
-  
-  //const [objetos, setObjetos] = useState('');
- 
+  const { objects } = useObjects();
 
-const handleSelectObject = (objeto) => {
+  const handleSelectObject = (objeto) => {
     navigate(`/info-objeto/${objeto.id}`, { state: { objeto } });
   };
 
@@ -33,16 +22,15 @@ const handleSelectObject = (objeto) => {
     navigate("/cadastrarobjeto");
   };
 
+  const todosObjetos = [...objetosOriginais, ...objects];
+
   return (
     <div className={styles.container}>
-      
-      <button  onClick={() => handleSubmitObject()} 
-      className={styles.addButton}>+ OBJETO</button>
+      <button onClick={handleSubmitObject} 
+        className={styles.addButton}>+ OBJETO</button>
 
-      {/* Legenda */}
       <div className={styles.legend}>
         <div className={styles.legendItem}>
-       
           <span className={styles.dotAchado}></span>
           Achado
         </div>
@@ -52,13 +40,19 @@ const handleSelectObject = (objeto) => {
         </div>
       </div>
 
-      {/* Grid de objetos */}
       <div className={styles.grid}>
-        {objetos.map((objeto) => (
+        {todosObjetos.map((objeto) => (
           <div key={objeto.id} className={styles.card}>
             <div className={styles.imageContainer}>
-              <span className={styles.photoText}>Foto do objeto.</span>
-              
+              {objeto.foto ? (
+                <img 
+                  src={objeto.foto} 
+                  alt={objeto.nome} 
+                  className={styles.objectImage}
+                />
+              ) : (
+                <span className={styles.photoText}>Foto do objeto.</span>
+              )}
             </div>
             <div className={styles.cardContent}>
               <h3 className={styles.objectName}>{objeto.nome}</h3>
@@ -78,7 +72,6 @@ const handleSelectObject = (objeto) => {
                 onClick={() => handleSelectObject(objeto)}
                 className={styles.selectButton}
               >
-              
                 Selecionar
               </button>
             </div>
@@ -87,4 +80,6 @@ const handleSelectObject = (objeto) => {
       </div>
     </div>
   );
-}
+};
+
+export default Home;
