@@ -13,6 +13,7 @@ const objetosOriginais = [
 const Home = () => {
   const navigate = useNavigate();
   const { objects } = useObjects();
+  
 
   const handleSelectObject = (objeto) => {
     navigate(`/info-objeto/${objeto.id}`, { state: { objeto } });

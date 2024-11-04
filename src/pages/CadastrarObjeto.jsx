@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './CadastrarObjeto.module.css';
 import { useObjects } from '../context/ObjectContext';
+import Form from "react-bootstrap/Form";
 
 const CadastrarObjeto = () => {
   const [objeto, setObjeto] = useState('');
@@ -14,6 +15,7 @@ const CadastrarObjeto = () => {
   const [erro, setErro] = useState('');
   const navigate = useNavigate();
   const { addObject } = useObjects();
+  const [status, setStatus] = useState('');
 
   const handleCancelar = () => {
     navigate('/home');
@@ -48,7 +50,7 @@ const CadastrarObjeto = () => {
         horarioEntrada,
         observacoes,
         foto: fotoPreview,
-        status: 'Achado',
+        status,
         dataEncontro: new Date().toLocaleDateString()
       };
 
@@ -86,6 +88,17 @@ const CadastrarObjeto = () => {
           onChange={(e) => setCpf(e.target.value)}
           required
         />
+          <Form.Group controlId="formGridTipo">
+            <Form.Select
+              value={status}
+              onChange={(e) => {
+                setStatus(e.target.value)
+              }}
+            >
+              <option>Achado</option>
+              <option>Perdido</option>
+            </Form.Select>
+          </Form.Group>
         <input
           type="time"
           placeholder="Horário de entrada"
