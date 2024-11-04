@@ -1,19 +1,18 @@
-import React from 'react';
+import React from "react";
 import { useNavigate } from 'react-router-dom';
 import styles from './Home.module.css';
 import { useObjects } from '../context/ObjectContext';
 
 const objetosOriginais = [
-  { id: 1, nome: "Garrafa Stanley", status: "Achado" },
-  { id: 2, nome: "Garrafa Farm", status: "Perdido" },
-  { id: 3, nome: "Garrafa Pacco", status: "Achado" },
-  { id: 4, nome: "Garrafa Tupperware", status: "Perdido" }
+  { id: '1', nome: "Garrafa Stanley", status: "Achado" },
+  { id: '2', nome: "Garrafa Farm", status: "Perdido" },
+  { id: '3', nome: "Garrafa Pacco", status: "Achado" },
+  { id: '4', nome: "Garrafa Tupperware", status: "Perdido" }
 ];
 
 const Home = () => {
   const navigate = useNavigate();
   const { objects } = useObjects();
-  
 
   const handleSelectObject = (objeto) => {
     navigate(`/info-objeto/${objeto.id}`, { state: { objeto } });

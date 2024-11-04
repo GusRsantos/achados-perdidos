@@ -4,6 +4,8 @@ import { Form, Button, Alert } from 'react-bootstrap';
 import styles from './Login.module.css';
 import logo from "../images/logo-senai.png";
 
+const url = "http://localhost:5000/todosObjetos";
+
 function Login() {
   const [email, setEmail] = useState('');
   const [cpf, setCpf] = useState('');

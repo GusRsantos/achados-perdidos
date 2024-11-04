@@ -1,17 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Modal } from 'react-bootstrap';
 import styles from './InfoObjetos.module.css';
+import { useObjects } from '../context/ObjectContext';
+import Form from "react-bootstrap/Form";
 
 export default function InfoObjetos() {
   const [showModal, setShowModal] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { objeto } = location.state || {};
+  const { objects, updateObject } = useObjects();
+  const [objetoAtual, setObjetoAtual] = useState(location.state?.objeto || {});
 
-  if (!objeto) {
-    return <div>Objeto não encontrado</div>;
-  }
+  useEffect(() => {
+    const objetoId = location.pathname.split('/').pop();
+    const objetoEncontrado = objects.find(obj => obj.id === objetoId) || location.state?.objeto || {};
+    setObjetoAtual(objetoEncontrado);
+  }, [location, objects]);
 
   const handleVoltar = () => {
     navigate('/home');
@@ -23,7 +29,21 @@ export default function InfoObjetos() {
 
   const handleConfirmarRetirada = () => {
     setShowModal(false);
-    navigate('/home');
+    navigate('/retirarobjeto');
+  };
+
+  const handleEditar = () => {
+    setIsEditing(true);
+  };
+
+  const handleSalvar = () => {
+    updateObject(objetoAtual);
+    setIsEditing(false);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setObjetoAtual(prev => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -35,34 +55,42 @@ export default function InfoObjetos() {
           <div className={styles.mainSection}>
             <div className={styles.imageContainer}>
               <img 
-                src={objeto.foto || "https://via.placeholder.com/200"} 
-                alt={objeto.nome} 
+                src={objetoAtual.foto || "https://via.placeholder.com/200"} 
+                alt={objetoAtual.nome} 
                 className={styles.objectImage} 
               />
             </div>
             <div className={styles.fieldsContainer}>
               <input
                 type="text"
-                value={objeto.nome}
-                readOnly
+                name="nome"
+                value={objetoAtual.nome || ''}
+                onChange={handleChange}
+                readOnly={!isEditing}
                 className={styles.input}
               />
               <input
                 type="text"
-                value={objeto.dataEncontro}
-                readOnly
+                name="dataEncontro"
+                value={objetoAtual.dataEncontro || ''}
+                onChange={handleChange}
+                readOnly={!isEditing}
                 className={styles.input}
               />
               <input
                 type="text"
-                value={objeto.localEncontro}
-                readOnly
+                name="localEncontro"
+                value={objetoAtual.localEncontro || ''}
+                onChange={handleChange}
+                readOnly={!isEditing}
                 className={styles.input}
               />
               <input
                 type="text"
-                value={objeto.encontradoPor}
-                readOnly
+                name="encontradoPor"
+                value={objetoAtual.encontradoPor || ''}
+                onChange={handleChange}
+                readOnly={!isEditing}
                 className={styles.input}
               />
             </div>
@@ -70,15 +98,20 @@ export default function InfoObjetos() {
           
           <div className={styles.bottomSection}>
             <div className={styles.statusSection}>
-              <label>Status:</label>
-              <input
-                type="text"
-                value={objeto.status}
-                readOnly
+            <Form.Group controlId="formGridTipo">
+          <Form.Select
+           value={objetoAtual.status || ''}
+                onChange={handleChange}
+                readOnly={!isEditing}
                 className={styles.statusInput}
-              />
+          >
+            <option>Achado</option>
+            <option>Perdido</option>
+          </Form.Select>
+        </Form.Group>
+              
               <div className={styles.buttonGroup}>
-               <button 
+                <button 
                   onClick={handleVoltar}
                   className={styles.buttonVoltar}
                 > 
@@ -90,14 +123,31 @@ export default function InfoObjetos() {
                 >
                   Retirar Objeto
                 </button>
+                {isEditing ? (
+                  <button 
+                    onClick={handleSalvar}
+                    className={styles.buttonEditar}
+                  >
+                    Salvar
+                  </button>
+                ) : (
+                  <button 
+                    onClick={handleEditar}
+                    className={styles.buttonEditar}
+                  >
+                    Editar
+                  </button>
+                )}
               </div>
             </div>
             
             <div className={styles.observacoesSection}>
               <label>Observações:</label>
               <textarea
-                value={objeto.observacoes}
-                readOnly
+                name="observacoes"
+                value={objetoAtual.observacoes || ''}
+                onChange={handleChange}
+                readOnly={!isEditing}
                 className={styles.observacoesInput}
               />
             </div>

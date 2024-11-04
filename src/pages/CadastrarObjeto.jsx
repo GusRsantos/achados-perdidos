@@ -15,7 +15,7 @@ const CadastrarObjeto = () => {
   const [erro, setErro] = useState('');
   const navigate = useNavigate();
   const { addObject } = useObjects();
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState('Achado');
 
   const handleCancelar = () => {
     navigate('/home');
@@ -88,17 +88,17 @@ const CadastrarObjeto = () => {
           onChange={(e) => setCpf(e.target.value)}
           required
         />
-          <Form.Group controlId="formGridTipo">
-            <Form.Select
-              value={status}
-              onChange={(e) => {
-                setStatus(e.target.value)
-              }}
-            >
-              <option>Achado</option>
-              <option>Perdido</option>
-            </Form.Select>
-          </Form.Group>
+        <Form.Group controlId="formGridTipo">
+          <Form.Select
+            value={status}
+            onChange={(e) => {
+              setStatus(e.target.value)
+            }}
+          >
+            <option>Achado</option>
+            <option>Perdido</option>
+          </Form.Select>
+        </Form.Group>
         <input
           type="time"
           placeholder="Horário de entrada"
