@@ -18,15 +18,20 @@
 
 .logoContainer {
   margin-bottom: 2rem;
-  width: 200px;
+  width: 100%;
   max-width: 100%;
   height: auto;
+  align-items:center;
+  margin-right: auto;
+  justify-content: center;
+  background-color: #003399;
 }
 
 .logo {
   width: 200px;
   max-width: 100%;
   height: auto;
+  justify-content: center;
 }
 
 .input {

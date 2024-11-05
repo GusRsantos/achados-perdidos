@@ -98,15 +98,17 @@ export default function InfoObjetos() {
           
           <div className={styles.bottomSection}>
             <div className={styles.statusSection}>
-            <Form.Group controlId="formGridTipo">
+            <Form.Group controlId="formGridStatus">
           <Form.Select
-           value={objetoAtual.status || ''}
+           value={objetoAtual.status}
+                name="status"
                 onChange={handleChange}
                 readOnly={!isEditing}
-                className={styles.statusInput}
+                className={styles.Input}
           >
             <option>Achado</option>
             <option>Perdido</option>
+        
           </Form.Select>
         </Form.Group>
               

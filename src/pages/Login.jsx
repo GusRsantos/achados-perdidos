@@ -14,6 +14,8 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  const [alertaMensagem, setAlertaMensagem] = useState("");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -28,7 +30,8 @@ function Login() {
         // Armazenar informação de que o usuário está logado
         localStorage.setItem('isAuthenticated', 'true');
         
-        // Redirecionar para a página home
+        
+        alert("Usuário cadastrado com sucesso");
         navigate('/home');
       } else {
         setError('E-mail ou senha incorretos');
@@ -46,7 +49,7 @@ function Login() {
         <div className={styles.logoContainer}>
         <img src={logo} alt="Logo Senai" className={styles.logo}/>
         </div>
-        
+
         {error && (
           <Alert variant="danger" className="mb-3">
             {error}
