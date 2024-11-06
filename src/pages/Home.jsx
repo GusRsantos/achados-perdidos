@@ -10,6 +10,8 @@ const objetosOriginais = [
   { id: '4', nome: "Garrafa Tupperware", status: "Perdido" }
 ];
 
+
+//ajakjakjakjakj
 const Home = () => {
   const navigate = useNavigate();
   const { objects } = useObjects();
