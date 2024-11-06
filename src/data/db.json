@@ -1,27 +1,27 @@
 {
-    "objetosOriginais": [
-      {
-        "id": "1",
-        "nome": "Garrafa Stanley",
-        "status": "Achado"
-      },
-      {
-        "id": "2",
-        "nome": "Garrafa Farm",
-        "status": "Perdido"
+  "objetosOriginais": [
+    {
+      "id": "1",
+      "nome": "Garrafa Stanley",
+      "status": "Achado"
+    },
+    {
+      "id": "2",
+      "nome": "Garrafa Farm",
+      "status": "Perdido"
 
-      },
-      {
-        "id": "3",
-        "nome": "Garrafa Pacco",
-        "status": "Achado"
+    },
+    {
+      "id": "3",
+      "nome": "Garrafa Pacco",
+      "status": "Achado"
 
-      },
-      {
-        "id": "4",
-        "nome": "Garrafa Tupperware",
-        "status": "Perdido"
+    },
+    {
+      "id": "4",
+      "nome": "Garrafa Tupperware",
+      "status": "Perdido"
 
-      }
-    ]
-  }
+    }
+  ]
+}

@@ -22,6 +22,18 @@ const Home = () => {
     navigate("/cadastrarobjeto");
   };
 
+  const btnFilter = () =>{
+    {/*If (nameInput === name) {
+ Alert(name)
+} else {
+Alert(Não encontrado)
+
+}
+
+} */}
+  } 
+
+
   const todosObjetos = [...objetosOriginais, ...objects];
 
   return (
@@ -31,11 +43,11 @@ const Home = () => {
 
       <div className={styles.legend}>
         <div className={styles.legendItem}>
-          <span className={styles.dotAchado}></span>
+          <button onClick={btnFilter} className={styles.btnAchado}></button>
           Achado
         </div>
         <div className={styles.legendItem}>
-          <span className={styles.dotPerdido}></span>
+          <button className={styles.btnPerdido}></button>
           Perdido
         </div>
       </div>

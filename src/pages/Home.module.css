@@ -29,12 +29,29 @@
 }
 
 .dotAchado {
+  width: 4px;
+  height: 4px;
+  background-color: #003399;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.btnAchado {
   width: 8px;
   height: 8px;
   background-color: #003399;
   border-radius: 50%;
   display: inline-block;
 }
+
+.btnPerdido {
+  width: 8px;
+  height: 8px;
+  background-color: #ff0000;
+  border-radius: 50%;
+  display: inline-block;
+}
+
 
 .dotPerdido {
   width: 8px;
@@ -127,4 +144,45 @@
 
 .selectButton:hover {
   background-color: #002266;
+}
+
+
+.filterButton {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filterButton:hover {
+  background-color: #f5f5f5;
+}
+
+.filterButton.active {
+  background-color: #e6e6e6;
+  font-weight: bold;
+}
+
+.filterButton.achado::before,
+.filterButton.perdido::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.filterButton.achado::before {
+  background-color: #003399;
+}
+
+.filterButton.perdido::before {
+  background-color: #ff0000;
 }
