@@ -11,7 +11,6 @@ const objetosOriginais = [
 ];
 
 
-//ajakjakjakjakj
 const Home = () => {
   const navigate = useNavigate();
   const { objects } = useObjects();
