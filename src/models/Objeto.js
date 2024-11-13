@@ -1,4 +1,5 @@
-// models/Objeto.js
+// models/objeto.js
+
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
@@ -7,34 +8,31 @@ const Objeto = sequelize.define('Objeto', {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
-  },
-  nome_objeto: {
-    type: DataTypes.STRING,
     allowNull: false,
   },
-  status_objeto: {
-    type: DataTypes.STRING,
+  nome_objeto: {
+    type: DataTypes.STRING(30),
     allowNull: false,
   },
   hora_entrada: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: DataTypes.TIME,
+    allowNull: true, // Campo opcional
   },
-  foto_objeto: {
-    type: DataTypes.STRING,
-    allowNull: false,
+  foto: {
+    type: DataTypes.STRING(11),
+    allowNull: true, // Campo opcional
   },
   descricao: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(100),
     allowNull: false,
   },
-
-
-
-
-
-
-
+  status: {
+    type: DataTypes.SMALLINT,
+    allowNull: true, // Campo opcional
+  },
+}, {
+  tableName: 'objeto', // Nome da tabela no banco de dados
+  timestamps: false, // Desativa os campos de createdAt e updatedAt
 });
 
 module.exports = Objeto;
