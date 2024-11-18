@@ -1,9 +1,11 @@
+// routes/DefinirRotas.js
+
 const express = require('express');
 const router = express.Router();
-const { Objeto } = require('../models/Objeto');
+const Objeto = require('../models/Objeto'); // Certifique-se de que o caminho está correto
 
 // Criar novo objeto
-router.post('/objetos', async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const novoObjeto = await Objeto.create(req.body);
     res.status(201).json(novoObjeto);
@@ -13,7 +15,7 @@ router.post('/objetos', async (req, res) => {
 });
 
 // Obter todos os objetos
-router.get('/objetos', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const objetos = await Objeto.findAll();
     res.status(200).json(objetos);
@@ -23,7 +25,7 @@ router.get('/objetos', async (req, res) => {
 });
 
 // Atualizar objeto pelo ID
-router.put('/objetos/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const objeto = await Objeto.findByPk(req.params.id);
     if (!objeto) {
@@ -37,7 +39,7 @@ router.put('/objetos/:id', async (req, res) => {
 });
 
 // Deletar objeto pelo ID
-router.delete('/objetos/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     const objeto = await Objeto.findByPk(req.params.id);
     if (!objeto) {
