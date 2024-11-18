@@ -28,7 +28,6 @@ export default function InfoObjetos() {
   };
 
   const handleConfirmarRetirada = () => {
-    setShowModal(false);
     navigate('/retirarobjeto');
   };
 

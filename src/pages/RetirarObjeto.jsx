@@ -14,11 +14,7 @@ const RetirarObjeto = () => {
   // Verifica se o objeto foi passado pela navegação
   const objeto = location.state?.objeto;
 
-  // Se o objeto não for encontrado, redireciona para a página inicial
-  if (!objeto) {
-    navigate('/home');
-    return null;
-  }
+  
 
   // Função para manipular o evento de retirada
   const handleSubmit = (e) => {
@@ -27,6 +23,8 @@ const RetirarObjeto = () => {
     alert(`O objeto "${objeto.nome}" foi retirado.`);
     navigate('/home');
   };
+
+
 
   return (
     <div className={styles.container}>
@@ -52,6 +50,7 @@ const RetirarObjeto = () => {
           value={horarioRetirada}
           onChange={(e) => setHorarioRetirada(e.target.value)}
         />
+        
         <button type="submit">Confirmar</button>
         <button
           type="button"
