@@ -33,7 +33,7 @@ function Login() {
         alert("Usuário cadastrado com sucesso");
         navigate('/home');
       } else {
-        setError('E-mail ou senha incorretos');
+        setError('CPF ou senha incorretos');
       }
     } catch (err) {
       setError('Ocorreu um erro ao fazer login. Tente novamente.');

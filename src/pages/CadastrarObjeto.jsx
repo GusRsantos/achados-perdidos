@@ -1,22 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import CartaoObjeto from '../components/CartaoObjeto';
 import { useNavigate } from 'react-router-dom';
 import styles from './CadastrarObjeto.module.css';
 import { useObjects } from '../context/ObjectContext';
 import { Form } from 'react-bootstrap';
 
 const CadastrarObjeto = () => {
-  const [objeto, setObjeto] = useState('');
-  const [encontradoPor, setEncontradoPor] = useState('');
-  const [cpf, setCpf] = useState('');
-  const [horarioEntrada, setHorarioEntrada] = useState('');
-  const [observacoes, setObservacoes] = useState('');
+  const [nomeObjeto, setNomeObjeto] = useState('');
+  const [horaEntrada, setHoraEntrada] = useState('');
+  const [descricao, setDescricao] = useState('');
   const [foto, setFoto] = useState(null);
   const [fotoPreview, setFotoPreview] = useState(null);
   const [erro, setErro] = useState('');
-  const navigate = useNavigate();
   const { addObject } = useObjects();
   const [status, setStatus] = useState('Achado');
   
+  // variaveis pro alerta
+  const [alertaClass, setAlertaClass] = useState("mb-3 d-none");
+  const [alertaMensagem, setAlertaMensagem] = useState("");
+
+  // variavel pro navigate
+  const navigate = useNavigate();
+
+  // Referência para o campo de input do arquivo
+  const fileInputRef = useRef(null);
+
   const handleCancelar = () => {
     navigate('/home');
   };
@@ -33,28 +41,55 @@ const CadastrarObjeto = () => {
     }
   };
 
+  // Resgate de dados da api para preencher o select de categoria
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        // busca os dados
+        const req = await fetch("http://localhost:5000/objetos");
+        // converte o resultado pra json
+       
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    fetchData();
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErro('');
-    
-    if (!objeto || !encontradoPor || !cpf) {
-      setErro('Por favor, preencha todos os campos obrigatórios');
-      return;
+    console.log("Cliquei");
+    if (!nomeObjeto == "") {
+      if (!horaEntrada == "") {
+        if (!descricao == "") {
+
+          const formData = new FormData();
+          formData.append("nome", nomeObjeto);
+          formData.append("hora", horaEntrada);
+          formData.append("descrição", descricao);
+          const req = await fetch("http://localhost:5000/objetos/criar", {
+            method: "POST",
+            body: formData,
+          });
+          alert("Produto cadastrado com sucesso");
+          setNomeObjeto("");
+          setHoraEntrada("");
+          setFoto("");
+          setDescricao(null);
+          fileInputRef.current.value = ""; // Limpa o valor do input file
+          navigate("/home");
+        } else {
+          setAlertaClass("mb-3");
+          setAlertaMensagem("O campo descrição não pode ser vazio");
+        }
+      } else {
+        setAlertaClass("mb-3");
+        setAlertaMensagem("O campo hora não pode ser vazio");
+      }
+    } else {
+      setAlertaClass("mb-3");
+      setAlertaMensagem("O campo nome do objeto não pode ser vazio");
     }
-
-    const newObject = {
-      nome: objeto,
-      encontradoPor,
-      cpf,
-      horarioEntrada,
-      observacoes,
-      foto: fotoPreview,
-      status,
-      dataEncontro: new Date().toLocaleDateString()
-    };
-
-    addObject(newObject);
-    navigate('/home');
   };
 
   return (
@@ -64,44 +99,21 @@ const CadastrarObjeto = () => {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Objeto encontrado"
-          value={objeto}
-          onChange={(e) => setObjeto(e.target.value)}
+          placeholder="Nome do objeto"
+          value={nomeObjeto}
+          onChange={(e) => setNomeObjeto(e.target.value)}
           required
         />
-        <input
-          type="text"
-          placeholder="Encontrado por"
-          value={encontradoPor}
-          onChange={(e) => setEncontradoPor(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          placeholder="CPF"
-          value={cpf}
-          onChange={(e) => setCpf(e.target.value)}
-          required
-        />
-        <Form.Group controlId="formGridTipo">
-          <Form.Select
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-          >
-            <option>Achado</option>
-            <option>Perdido</option>
-          </Form.Select>
-        </Form.Group>
         <input
           type="time"
           placeholder="Horário de entrada"
-          value={horarioEntrada}
-          onChange={(e) => setHorarioEntrada(e.target.value)}
+          value={horaEntrada}
+          onChange={(e) => setHoraEntrada(e.target.value)}
         />
         <textarea
-          placeholder="Observações"
-          value={observacoes}
-          onChange={(e) => setObservacoes(e.target.value)}
+          placeholder="Descrição"
+          value={descricao}
+          onChange={(e) => setDescricao(e.target.value)}
         ></textarea>
         <div className={styles.fileUpload}>
           <input
