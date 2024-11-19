@@ -169,7 +169,7 @@ app.get("/", (req, res) => {
 const conn = mysql.createConnection({
     host:"localhost",
     user:"root",
-    password: "",
+    password: "SQL5625",
     database: "achadosperdidos"
 })
 
