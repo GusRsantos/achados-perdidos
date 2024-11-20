@@ -52,8 +52,6 @@ useEffect(() => {
   }
   fetchData();
 
-  
-
 },);
 
 
@@ -72,7 +70,6 @@ useEffect(() => {
           Perdido
         </div>
       </div>
-// aassklkslks
       <div className={styles.grid}>
         {objetos.map((obj) =>
           <div key={obj.id} className={styles.card}>
