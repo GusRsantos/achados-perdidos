@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Container, Nav } from 'react-bootstrap';
+import { FaUsers, FaSignOutAlt } from 'react-icons/fa';
 import styles from './NavBarra.module.css';
 import logo from "../images/logo-senai.png";
 
@@ -16,13 +17,16 @@ const NavBarra = () => {
     navigate('/home');
   };
 
+  const handleUsuarios = () => {
+    navigate('/lista-usuarios');
+  };
 
   return (
     <Navbar className={styles.navbar} expand={false}>
       <Container fluid className={styles.container}>
         <div className={styles.logo}>
-       <img src={logo} alt="Logo Senai" className={styles.logo} onClick={handleReturnOnImage}/>
-       </div>
+          <img src={logo} alt="Logo Senai" className={styles.logo} onClick={handleReturnOnImage}/>
+        </div>
         <div className={styles.searchContainer}>
           <input
             type="text"
@@ -47,7 +51,14 @@ const NavBarra = () => {
 
         <Navbar.Collapse id="navbar-nav">
           <Nav className="ms-auto">
-            <Nav.Link onClick={handleLogout}>Sair</Nav.Link>
+            <Nav.Link onClick={handleUsuarios} className={styles.navLink}>
+              <FaUsers className={styles.navIcon} />
+              Usuários
+            </Nav.Link>
+            <Nav.Link onClick={handleLogout} className={styles.navLink}>
+              <FaSignOutAlt className={styles.navIcon} />
+              Sair
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
