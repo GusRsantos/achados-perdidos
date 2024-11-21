@@ -38,21 +38,7 @@ const CadastrarObjeto = () => {
     }
   };
 
-  // Resgate de dados da api para preencher o select de categoria
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        // busca os dados
-        const req = await fetch("http://localhost:5000/objetos");
-        // converte o resultado pra json
-       
-      } catch (error) {
-        console.log(error.message);
-      }
-    }
-    fetchData();
-  }, []);
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Cliquei");

@@ -1,12 +1,10 @@
 CREATE DATABASE achadosperdidos;
 use achadosperdidos;
-CREATE DATABASE achadosperdidos;
-use achadosperdidos;
 
 create table usuario (
 	id_usuario int primary key auto_increment,
+      nome_usuario varchar(70) not null,
     cpf_usuario varchar(11) not null,
-    nome_usuario varchar(70) not null,
     senha_usuario varchar(15) not null,
     tipo_usuario enum('administrador', 'gerente', 'funcionario'));
 
@@ -20,6 +18,9 @@ create table objeto (
 	status enum('achado', 'perdido') DEFAULT('perdido')
 );
 
+insert into adm (cpf_adm,nome_adm,senha)
+values("12345678901","Creusa Souza","1234");
+
 
 INSERT INTO objeto (nome_objeto, hora_entrada, descricao, status)
 VALUES
@@ -29,6 +30,12 @@ VALUES
 INSERT INTO objeto (nome_objeto, hora_entrada, descricao, status)
 VALUES ('Garrafa Pacco', '13:30', 'Garrafa azul marinho', DEFAULT),
   ('Garrafa Tupperware','17:15', 'Garrafa vermelho vinho', DEFAULT);
-
-select * from adm;
+  
+INSERT INTO usuario (nome_usuario, cpf_usuario, senha_usuario, tipo_usuario) 
+VALUES ('GUSTAVO RESERVA', '12345678901', '54321', 'administrador'),
+('JOY NICHOLAS', '40582493857', '67890', 'funcionario'),
+('CREUSA SOUZA', '7534283714', '12134', 'gerente');
+ 
+  
+select * from usuario;
 select * from objeto;

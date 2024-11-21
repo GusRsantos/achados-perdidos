@@ -68,6 +68,20 @@ app.get("/usuario/entrar", (req, res) => {
     })
 })
 
+//Rota de usuarios
+app.get("/usuario", (req, res) => {
+    const sql = `SELECT * FROM usuario`
+    conn.query(sql, (erro, dados) => {
+        if (erro) {
+            res.status(500).json(erro).end()
+        }
+        else {
+            res.status(200).json(dados).end()
+        }
+    })
+})
+
+
 //Rota de objetos
 app.get("/objetos", (req, res) => {
     const sql = `SELECT * FROM objeto`
@@ -169,7 +183,7 @@ app.get("/", (req, res) => {
 const conn = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "SQL5625",
+    password: "",
     database: "achadosperdidos"
 })
 

@@ -1,17 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
 import styles from './ListaUsuarios.module.css';
 
-const usuarios = [
-  { id: 1, nome: "GUSTAVO RESERVA", cpf: "12345678901" },
-  { id: 2, nome: "SAMUEL LOUREIRO", cpf: "27534283714" },
-  { id: 3, nome: "JOY NICHOLAS", cpf: "40582493857" },
-  { id: 4, nome: "JOÃO VICTOR KLEIN", cpf: "10628285916" },
-  { id: 5, nome: "DAVI DO SANTOS", cpf: "54067132496" },
-  { id: 6, nome: "ARTHUR EVANGELISTA", cpf: "09876432859" }
-];
-
 const ListaUsuarios = () => {
+
+  const [usuarios, setUsuarios] = useState([]);
+
   const navigate = useNavigate();
 
   const handleNovoUsuario = () => {
@@ -28,6 +22,21 @@ const ListaUsuarios = () => {
     // Implementar lógica de exclusão
   };
 
+// Resgate de dados da api para pegar os produtos
+useEffect(() => {
+  async function fetchData() {
+    try {
+      const res = await fetch("http://localhost:5000/usuario");
+      const users = await res.json();
+      setUsuarios(users);
+    } catch (error) {
+      console.error("Erro ao buscar objetos:", error.message);
+    }
+  }
+
+  fetchData();
+}, []); // Chama o `useEffect` apenas quando o componente for mon
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -43,21 +52,23 @@ const ListaUsuarios = () => {
         <table className={styles.table}>
           <thead>
             <tr>
-              <th>Nome Completo</th>
+              <th>Nome</th>
               <th>CPF</th>
               <th>Senha</th>
-              <th colSpan="2">Ações</th>
+              <th colSpan="3">Tipo</th>
             </tr>
           </thead>
           <tbody>
-            {usuarios.map((usuario) => (
-              <tr key={usuario.id}>
-                <td>{usuario.nome}</td>
-                <td>{usuario.cpf}</td>
+            {usuarios.map((user) => (
+              <tr key={user.id}>
+                <td>{user.nome_usuario}</td>
+                <td>{user. cpf_usuario}</td>
+                <td>{user.senha_usuario}</td>
+                <td>{user.tipo_usuario}</td>
                 <td>******</td>
                 <td className={styles.actionCell}>
                   <button
-                    onClick={() => handleExcluir(usuario.id)}
+                    onClick={() => handleExcluir(usuarios.id)}
                     className={styles.excluirButton}
                   >
                     EXCLUIR
@@ -65,7 +76,7 @@ const ListaUsuarios = () => {
                 </td>
                 <td className={styles.actionCell}>
                   <button
-                    onClick={() => handleEditar(usuario.id)}
+                    onClick={() => handleEditar(usuarios.id)}
                     className={styles.editarButton}
                   >
                     EDITAR
