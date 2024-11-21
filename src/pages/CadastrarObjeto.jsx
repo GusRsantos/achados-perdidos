@@ -56,44 +56,58 @@ const CadastrarObjeto = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Cliquei");
-    if (!nome == "") {
-      if (!hora == "") {
-        if (!descricao == "") {
-
-          const object = { nome, hora, descricao, img };
-
-          const req = await fetch("http://localhost:5000/objetos/criar", {
-            method: "POST",
-            body: JSON.stringify(object),
-          });
-
-          const res = req.json();
-
+  
+    if (nome && hora && descricao && img) {
+      const formData = new FormData();
+      formData.append("nome", nome);
+      formData.append("hora", hora);
+      formData.append("descricao", descricao);
+      formData.append("img", img); // Adiciona a imagem
+  
+      try {
+        const req = await fetch("http://localhost:5000/objetos/criar", {
+          method: "POST",
+          body: formData, // FormData no corpo
+        });
+  
+        if (req.ok) {
           alert("Produto cadastrado com sucesso");
           setNome("");
           setHora("");
           setImagem("");
-          setDescricao(null);
+          setDescricao("");
           navigate("/home");
         } else {
-          setAlertaClass("mb-3");
-          setAlertaMensagem("O campo descrição não pode ser vazio");
+          alert("Erro ao cadastrar");
         }
-      } else {
-        setAlertaClass("mb-3");
-        setAlertaMensagem("O campo hora não pode ser vazio");
+      } catch (error) {
+        console.error("Erro na requisição:", error);
+        alert("Erro na requisição. Verifique o console.");
       }
     } else {
-      setAlertaClass("mb-3");
-      setAlertaMensagem("O campo nome do objeto não pode ser vazio");
+      if (!nome) {
+        setAlertaClass("mb-3");
+        setAlertaMensagem("O campo nome do objeto não pode ser vazio");
+      } else if (!hora) {
+        setAlertaClass("mb-3");
+        setAlertaMensagem("O campo hora não pode ser vazio");
+      } else if (!descricao) {
+        setAlertaClass("mb-3");
+        setAlertaMensagem("O campo descrição não pode ser vazio");
+      } else if (!img) {
+        setAlertaClass("mb-3");
+        setAlertaMensagem("A imagem não pode ser vazia");
+      }
     }
   };
+  
+  
 
   return (
     <div className={styles.container}>
       <h2>Cadastro de objeto</h2>
       {erro && <p className={styles.erro}>{erro}</p>}
-      <form >
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Nome do objeto"
