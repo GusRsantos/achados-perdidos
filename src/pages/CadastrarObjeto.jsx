@@ -1,19 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
-import CartaoObjeto from '../components/CartaoObjeto';
-import { useNavigate } from 'react-router-dom';
+import { json, useNavigate } from 'react-router-dom';
 import styles from './CadastrarObjeto.module.css';
 import { useObjects } from '../context/ObjectContext';
 import { Form } from 'react-bootstrap';
 
 const CadastrarObjeto = () => {
-  const [nomeObjeto, setNomeObjeto] = useState('');
-  const [horaEntrada, setHoraEntrada] = useState('');
+  const [nome, setNome] = useState('');
+  const [hora, setHora] = useState('');
   const [descricao, setDescricao] = useState('');
-  const [foto, setFoto] = useState(null);
+  const [img, setImagem] = useState(null);
   const [fotoPreview, setFotoPreview] = useState(null);
   const [erro, setErro] = useState('');
-  const { addObject } = useObjects();
-  const [status, setStatus] = useState('Achado');
+
+  
   
   // variaveis pro alerta
   const [alertaClass, setAlertaClass] = useState("mb-3 d-none");
@@ -22,8 +21,6 @@ const CadastrarObjeto = () => {
   // variavel pro navigate
   const navigate = useNavigate();
 
-  // Referência para o campo de input do arquivo
-  const fileInputRef = useRef(null);
 
   const handleCancelar = () => {
     navigate('/home');
@@ -32,7 +29,7 @@ const CadastrarObjeto = () => {
   const handleFotoUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setFoto(file);
+      setImagem(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setFotoPreview(reader.result);
@@ -59,24 +56,24 @@ const CadastrarObjeto = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Cliquei");
-    if (!nomeObjeto == "") {
-      if (!horaEntrada == "") {
+    if (!nome == "") {
+      if (!hora == "") {
         if (!descricao == "") {
 
-          const formData = new FormData();
-          formData.append("nome", nomeObjeto);
-          formData.append("hora", horaEntrada);
-          formData.append("descrição", descricao);
+          const object = { nome, hora, descricao, img };
+
           const req = await fetch("http://localhost:5000/objetos/criar", {
             method: "POST",
-            body: formData,
+            body: JSON.stringify(object),
           });
+
+          const res = req.json();
+
           alert("Produto cadastrado com sucesso");
-          setNomeObjeto("");
-          setHoraEntrada("");
-          setFoto("");
+          setNome("");
+          setHora("");
+          setImagem("");
           setDescricao(null);
-          fileInputRef.current.value = ""; // Limpa o valor do input file
           navigate("/home");
         } else {
           setAlertaClass("mb-3");
@@ -96,19 +93,19 @@ const CadastrarObjeto = () => {
     <div className={styles.container}>
       <h2>Cadastro de objeto</h2>
       {erro && <p className={styles.erro}>{erro}</p>}
-      <form onSubmit={handleSubmit}>
+      <form >
         <input
           type="text"
           placeholder="Nome do objeto"
-          value={nomeObjeto}
-          onChange={(e) => setNomeObjeto(e.target.value)}
+          value={nome}
+          onChange={(e) => setNome(e.target.value)}
           required
         />
         <input
           type="time"
           placeholder="Horário de entrada"
-          value={horaEntrada}
-          onChange={(e) => setHoraEntrada(e.target.value)}
+          value={hora}
+          onChange={(e) => setHora(e.target.value)}
         />
         <textarea
           placeholder="Descrição"
@@ -129,7 +126,8 @@ const CadastrarObjeto = () => {
             />
           )}
         </div>
-        <button type="submit">Cadastrar</button>
+        <button type="submit"
+        onClick={handleSubmit}>Cadastrar</button>
         <button 
           type="button"
           onClick={handleCancelar}

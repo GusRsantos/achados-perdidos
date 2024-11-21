@@ -94,7 +94,8 @@ app.post("/objetos/criar", (req, res) => {
 
     req.files.imagem.mv(__dirname + "/images/" + img)
 
-    const sql = `INSERT INTO itens (it_nome, it_desc, it_cat, it_preco, it_imagem) VALUES ('${nome}', '${descricao}', '${categoria}', '${preco}', '${img}')`    
+    const sql = `INSERT INTO itens (it_nome, it_desc, it_cat, it_preco, it_imagem) VALUES ('${nome}', 
+     '${hora}', '${img}', '${descricao}')`    
 
     conn.query(sql, (erro, dados) => {
         if(erro){
@@ -143,10 +144,10 @@ app.get("/objetos/excluir/:id", (req, res) => {
     const id = req.params.id;
     const nome = req.body.nome
     const hora = req.body.hora
-    const imagem = req.body.imagem
+    const img = req.body.imagem
     const descricao = req.body.descricao
   
-    const sql = `UPDATE itens SET nome_objeto = '${nome}', hora_entrada = '${hora}', foto = '${imagem}', descricao = '${descricao}', status = 'achado' WHERE id_objeto = '${id}' `;
+    const sql = `UPDATE itens SET nome_objeto = '${nome}', hora_entrada = '${hora}', foto = '${img}', descricao = '${descricao}', status = 'achado' WHERE id_objeto = '${id}' `;
   
     conn.query(sql, (erro) => {
       if (erro) {
@@ -169,7 +170,7 @@ app.get("/", (req, res) => {
 const conn = mysql.createConnection({
     host:"localhost",
     user:"root",
-    password: "",
+    password: "SQL5625",
     database: "achadosperdidos"
 })
 

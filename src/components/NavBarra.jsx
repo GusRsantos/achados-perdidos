@@ -18,7 +18,7 @@ const NavBarra = () => {
   };
 
   const handleUsuarios = () => {
-    navigate('/lista-usuarios');
+    navigate('/listausuarios');
   };
 
   return (

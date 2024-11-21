@@ -4,6 +4,16 @@
   background-color: #fff;
 }
 
+.listaObjetos {
+  display: flex;          /* Alinha os cartões em linha */
+  flex-wrap: wrap;        /* Permite quebrar linha quando necessário */
+  gap: 16px;              /* Espaçamento entre os cartões */
+  justify-content: center; /* Centraliza os cartões horizontalmente */
+  padding: 20px;          /* Adiciona espaçamento interno */
+  background-color: #f9f9f9; /* Adiciona uma cor de fundo */
+}
+
+
 .addButton {
   background-color: #003399;
   color: white;

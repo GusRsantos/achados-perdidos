@@ -10,6 +10,8 @@ import CadastrarObjeto from "./pages/CadastrarObjeto";
 import RetirarObjeto from "./pages/RetirarObjeto";
 import Home from './pages/Home';
 import InfoObjetos from './pages/InfoObjetos';
+import CadastrarUsuario from "./pages/CadastrarUsuario";
+import ListaUsuarios from './pages/ListaUsuarios';
 
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
@@ -65,6 +67,24 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+            path="/listausuarios"
+              element={
+                <ProtectedRoute>
+                  <NavBarra />
+                  <ListaUsuarios/>
+                </ProtectedRoute>
+              }
+              />
+               <Route
+            path="/cadastrarusuario"
+              element={
+                <ProtectedRoute>
+                  <NavBarra />
+                  <CadastrarUsuario/>
+                </ProtectedRoute>
+              }
+              />
           </Routes>
         </BrowserRouter>
       </ObjectProvider>

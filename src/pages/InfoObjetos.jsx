@@ -10,7 +10,7 @@ export default function InfoObjetos() {
   const [isEditing, setIsEditing] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { objects, updateObject } = useObjects();
+  const { objects, updateObject } = useObjects(); 
   const [objetoAtual, setObjetoAtual] = useState(location.state?.objeto || {});
 
   useEffect(() => {

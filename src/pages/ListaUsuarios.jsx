@@ -15,7 +15,7 @@ const ListaUsuarios = () => {
   const navigate = useNavigate();
 
   const handleNovoUsuario = () => {
-    navigate('/cadastrar-usuario');
+    navigate('/cadastrarusuario');
   };
 
   const handleEditar = (id) => {
