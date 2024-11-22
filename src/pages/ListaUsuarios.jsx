@@ -14,7 +14,6 @@ const ListaUsuarios = (props) => {
   };
 
 
-  //fdjkdjkdjkdj
 
   // Resgate de dados da api para pegar os produtos
   useEffect(() => {

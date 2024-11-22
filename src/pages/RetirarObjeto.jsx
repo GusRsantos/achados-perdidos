@@ -24,7 +24,7 @@ const RetirarObjeto = () => {
     navigate('/home');
   };
 
-
+//sklsklkslkslk
 
   return (
     <div className={styles.container}>
