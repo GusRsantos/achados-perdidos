@@ -1,30 +1,65 @@
 .container {
+    width: 100%;
+    min-height: calc(100vh - 60px);
+    padding: 20px;
+    background-color: #fff;
+  }
+  
+  .titulo {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: normal;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+  }
+  
+  .conteudo {
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-}
-
-form {
+    align-items: flex-start;
+  }
+  
+  .linkPDF {
+    color: #000;
+    text-decoration: none;
+    margin-bottom: 20px;
+  }
+  
+  .linkPDF:hover {
+    text-decoration: underline;
+  }
+  
+  .containerBotao {
     display: flex;
-    flex-direction: column;
-    width: 300px;
-}
-
-input, button {
-    margin: 10px 0;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-button {
-    background-color: #003366;
+    justify-content: flex-end;
+    padding: 20px;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+  }
+  
+  .botaoFinalizar {
+    background-color: #003399;
     color: white;
     border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
     cursor: pointer;
-}
-
-button:hover {
-    background-color: #002244;
-}
+    font-size: 14px;
+  }
+  
+  .botaoFinalizar:hover {
+    background-color: #002266;
+  }
+  
+  @media (max-width: 768px) {
+    .container {
+      padding: 10px;
+    }
+    
+    .containerBotao {
+      padding: 10px;
+    }
+  }
