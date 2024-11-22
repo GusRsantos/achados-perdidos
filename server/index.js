@@ -137,6 +137,26 @@ app.get("/objetos/excluir/:id", (req, res) => {
 });
 
 
+
+// Rota para deletar um usuario
+// Rota para deletar um usuário
+app.delete("/usuario/excluir/:id", (req, res) => {
+    const id = req.params.id;
+  
+    const sql = `DELETE FROM usuario WHERE id_usuario = ?`;
+  
+    conn.query(sql, [id], (erro) => {
+      if (erro) {
+        console.log(erro);
+        res.status(500).json(erro.sqlMessage).end();
+      } else {
+        res.status(200).json("Usuário deletado com sucesso").end();
+      }
+    });
+  });
+  
+
+
 // Rota para selecionar um produto
 app.get("/objetos/edicao/:id", (req, res) => {
     const id = req.params.id;
@@ -183,7 +203,7 @@ app.get("/", (req, res) => {
 const conn = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "",
+    password: "SQL5625",
     database: "achadosperdidos"
 })
 

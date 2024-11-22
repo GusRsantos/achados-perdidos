@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
 import styles from './ListaUsuarios.module.css';
 
-const ListaUsuarios = () => {
+const ListaUsuarios = (props) => {
 
   const [usuarios, setUsuarios] = useState([]);
 
@@ -17,10 +17,7 @@ const ListaUsuarios = () => {
     // Implementar lógica de edição
   };
 
-  const handleExcluir = (id) => {
-    console.log('Excluir usuário:', id);
-    // Implementar lógica de exclusão
-  };
+  const id = props.id;
 
 // Resgate de dados da api para pegar os produtos
 useEffect(() => {
@@ -36,6 +33,31 @@ useEffect(() => {
 
   fetchData();
 }, []); // Chama o `useEffect` apenas quando o componente for mon
+
+
+
+
+const handleExcluir = async (id) => {
+  if (!id) return;
+
+  try {
+    const response = await fetch(`http://localhost:5000/usuario/excluir/${id}`, {
+      method: "DELETE", // Use DELETE em vez de GET
+    });
+
+    if (response.ok) {
+      alert("Usuário deletado com sucesso!");
+      // Atualizar a lista de usuários após exclusão
+      setUsuarios(usuarios.filter(user => user.id !== id));
+    } else {
+      const errorMsg = await response.text();
+      alert(`Erro ao deletar o usuário: ${errorMsg}`);
+    }
+  } catch (error) {
+    console.error("Erro ao excluir usuário:", error.message);
+    alert("Erro ao excluir usuário.");
+  }
+};
 
   return (
     <div className={styles.container}>
@@ -67,8 +89,8 @@ useEffect(() => {
                 <td>{user.tipo_usuario}</td>
                 <td>******</td>
                 <td className={styles.actionCell}>
-                  <button
-                    onClick={() => handleExcluir(usuarios.id)}
+                  <button 
+                    onClick={handleExcluir}
                     className={styles.excluirButton}
                   >
                     EXCLUIR
