@@ -98,7 +98,7 @@ app.get("/objetos", (req, res) => {
 
 //Rota pra conseguir acessar a pasta de imagens no back
 app.use("/images", express.static(__dirname + "/images"))
-//Rota para criar produtos
+//Rota para criar objettos
 app.post("/objetos/criar", (req, res) => {
     const nome = req.body.nome
     const hora = req.body.hora
@@ -121,10 +121,10 @@ app.post("/objetos/criar", (req, res) => {
 })
 
 // Rota para deletar um produto
-app.get("/objetos/excluir/:id", (req, res) => {
+app.delete("/objetos/excluir/:id", (req, res) => {
     const id = req.params.id;
 
-    const sql = `DELETE FROM objeto WHERE id_objeto = '${id}'`;
+    const sql = `DELETE FROM objeto WHERE id_objeto = ${id}`;
 
     conn.query(sql, (erro) => {
         if (erro) {
@@ -138,26 +138,50 @@ app.get("/objetos/excluir/:id", (req, res) => {
 
 
 
-// Rota para deletar um usuario
+
+
 // Rota para deletar um usuário
 app.delete("/usuario/excluir/:id", (req, res) => {
     const id = req.params.id;
-  
-    const sql = `DELETE FROM usuario WHERE id_usuario = ?`;
-  
-    conn.query(sql, [id], (erro) => {
-      if (erro) {
-        console.log(erro);
-        res.status(500).json(erro.sqlMessage).end();
-      } else {
-        res.status(200).json("Usuário deletado com sucesso").end();
-      }
+
+    const sql = `DELETE FROM usuario WHERE id_usuario = '${id}'`;
+    conn.query(sql, (erro) => {
+        if (erro) {
+            console.log(erro);
+            res.status(500).json(erro.sqlMessage).end();
+        } else {
+            res.status(200).json("Usuário deletado com sucesso").end();
+        }
     });
-  });
+});
+
+// Rota para atualizar um usuario
+app.put("/usuario/editar/:id", (req, res) => {
+    const id = req.params.id;
+    const nome = req.body.nome
+    const cpf = req.body.cpf
+    const senha = req.body.senha
+    const tipo = req.body.tipo
+
+
+    const sql = `UPDATE usuario SET nome_usuario = '${nome}', cpf_usuario = '${cpf}', senha_usuario = '${senha}', tipo_usuario = '${tipo}' WHERE id_usuario = '${id}' `;
+
+    conn.query(sql, (erro) => {
+        if (erro) {
+            console.log(erro);
+            res.status(500).end();
+        } else {
+            res.status(200).end();
+        }
+    });
+});
+
+
+
   
 
 
-// Rota para selecionar um produto
+// Rota para selecionar um objeto
 app.get("/objetos/edicao/:id", (req, res) => {
     const id = req.params.id;
     const sql = `SELECT * FROM objeto WHERE id_objeto = '${id}' `;
@@ -172,7 +196,7 @@ app.get("/objetos/edicao/:id", (req, res) => {
     });
 });
 
-// Rota para atualizar um produto
+// Rota para atualizar um objeto
 app.put("/objetos/editar/:id", (req, res) => {
     const id = req.params.id;
     const nome = req.body.nome
@@ -180,7 +204,7 @@ app.put("/objetos/editar/:id", (req, res) => {
     const img = req.body.imagem
     const descricao = req.body.descricao
 
-    const sql = `UPDATE itens SET nome_objeto = '${nome}', hora_entrada = '${hora}', foto = '${img}', descricao = '${descricao}', status = 'achado' WHERE id_objeto = '${id}' `;
+    const sql = `UPDATE objeto SET nome_objeto = '${nome}', hora_entrada = '${hora}', foto = '${img}', descricao = '${descricao}', status = 'achado' WHERE id_objeto = '${id}' `;
 
     conn.query(sql, (erro) => {
         if (erro) {
