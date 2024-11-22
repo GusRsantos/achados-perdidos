@@ -103,6 +103,7 @@ app.post("/objetos/criar", (req, res) => {
     const nome = req.body.nome
     const hora = req.body.hora
     const descricao = req.body.descricao
+    console.log(req.files)
     const img = Date.now().toString() + "_" + req.files.img
 
     req.files.imagem.mv(__dirname + "/images/" + img)
