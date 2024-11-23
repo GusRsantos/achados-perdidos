@@ -42,6 +42,8 @@ const CadastrarObjeto = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Cliquei");
+    console.log(nome);
+    
   
     if (nome && hora && descricao && img) {
       const formData = new FormData();
@@ -87,7 +89,7 @@ const CadastrarObjeto = () => {
     }
   };
   
-  
+
 
   return (
     <div className={styles.container}>
