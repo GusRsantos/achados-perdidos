@@ -118,7 +118,6 @@ const CadastrarUsuario = () => {
               }}
             >
                <option value="administrador">Administrador</option>
-              <option value="gerente">Gerente</option>
               <option value="funcionario">Funcionário</option>
             </Form.Select>
           </Form.Group>
