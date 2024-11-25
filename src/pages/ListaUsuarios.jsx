@@ -17,7 +17,7 @@ const ListaUsuarios = (props) => {
 
   // Resgate de dados da api para pegar os produtos
   useEffect(() => {
-    async function fetchData() {
+    async function fetchData() {z
       try {
         const res = await fetch("http://localhost:5000/usuario");
         const users = await res.json();

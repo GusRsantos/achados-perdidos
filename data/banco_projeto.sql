@@ -21,10 +21,6 @@ create table objeto (
 	status enum('achado', 'perdido') DEFAULT('perdido')
 );
 
-insert into adm (cpf_adm,nome_adm,senha)
-values("12345678901","Creusa Souza","1234");
-
-
 INSERT INTO objeto (nome_objeto, hora_entrada, descricao, status)
 VALUES
 ('Garrafa Stanley', '10:00', 'Garrafa de metal grande', DEFAULT),

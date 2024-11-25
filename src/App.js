@@ -40,15 +40,13 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/info-objeto/:id"
-              element={
-                <ProtectedRoute>
-                  <NavBarra />
-                  <InfoObjetos />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="/infoobjetos/:id" element={
+               <ProtectedRoute>
+               <NavBarra />
+               <InfoObjetos />
+             </ProtectedRoute>
+             } />
+
             <Route
               path="/cadastrarobjeto"
               element={

@@ -1,132 +1,133 @@
-//Configuração express
-const express = require('express')
-const app = express()
-const port = 5000
+const express = require('express');
+const app = express();
+const port = 5000;
+const mysql = require('mysql2');
+const fileUpload = require('express-fileupload');
+const cors = require('cors');
+const path = require('path');
 
-// Configuração banco
-const mysql = require('mysql2')
+// Middleware para manipulação de uploads
+app.use(fileUpload());
 
-// Variáveis para o file upload
-const fileUpload = require('express-fileupload')
-app.use(fileUpload())
+// Middleware para leitura de JSON e URLs
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-//Ler o body e transformar em JSON
-app.use(
-    express.urlencoded({
-        extended: true
-    })
-)
-app.use(express.json())
+// Middleware para CORS
+app.use(cors());
 
-// Código pro CORS funcionar
-const cors = require('cors')
-app.use(cors())
+// Servir arquivos estáticos (imagens)
+app.use("/images", express.static(path.join(__dirname, "/images")));
 
-//Rota para criação de usuário
+// Configuração do banco de dados
+const conn = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "SQL5625",
+    database: "achadosperdidos"
+});
+
+// Conexão com o banco
+conn.connect((erro) => {
+    if (erro) {
+        console.log(erro);
+    } else {
+        console.log("Conectado ao banco com sucesso");
+        app.listen(port, () => {
+            console.log(`Servidor rodando na porta ${port}`);
+        });
+    }
+});
+
+// Rota para criação de usuário
 app.post("/usuario/criar", (req, res) => {
-    const nome = req.body.nome
-    const cpf = req.body.cpf
-    const senha = req.body.senha
-    const tipo = req.body.tipo
+    const { nome, cpf, senha, tipo } = req.body;
 
-    const sql = `INSERT INTO usuario (nome_usuario, cpf_usuario, senha_usuario, tipo_usuario) VALUES ('${nome}', '${cpf}', '${senha}', '${tipo}')`
+    const sql = `INSERT INTO usuario (cpf_usuario, nome_usuario, senha_usuario, tipo_usuario) VALUES (?, ?, ?, ?)`;
 
-    conn.query(sql, (erro) => {
+    conn.query(sql, [cpf, nome, senha, tipo], (erro) => {
         if (erro) {
-            console.log(erro)
-            res.status(500).json(erro.sqlMessage).end()
+            console.log(erro);
+            res.status(500).json(erro.sqlMessage).end();
+        } else {
+            res.status(200).json("Cadastro efetuado").end();
         }
-        else {
-            res.status(200).json("Cadastro efetuado").end()
-        }
-    })
-})
+    });
+});
 
-
-//Rota pro login
+// Rota para login de usuário
 app.get("/usuario/entrar", (req, res) => {
-    const cpf = req.query.cpf
-    const senha = req.query.senha
+    const { cpf, senha } = req.query;
 
-    const sql = `SELECT * FROM usuario WHERE cpf_usuario = '${cpf}' AND senha_usuario = '${senha}'`
+    const sql = `SELECT * FROM usuario WHERE cpf_usuario = ? AND senha_usuario = ?`;
 
-    conn.query(sql, (erro, result) => {
+    conn.query(sql, [cpf, senha], (erro, result) => {
         if (erro) {
-            console.log(erro)
-            res.status(500).json(erro).end()
-        }
-        else {
-            //Se a consulta não retornar resultados, significa que aquele usuário ou senha são incorretas
+            console.log(erro);
+            res.status(500).json(erro).end();
+        } else {
             if (result.length === 0) {
-                res.status(500).json("Usuário ou senha incorretas").end()
-            }
-            //Se achar alguém manda esse registro pro front
-            else {
-                res.status(200).json(JSON.stringify(result)).end()
+                res.status(500).json("Usuário ou senha incorretos").end();
+            } else {
+                res.status(200).json(result).end();
             }
         }
-    })
-})
+    });
+});
 
-//Rota de usuarios
-app.get("/usuario", (req, res) => {
-    const sql = `SELECT * FROM usuario`
-    conn.query(sql, (erro, dados) => {
-        if (erro) {
-            res.status(500).json(erro).end()
-        }
-        else {
-            res.status(200).json(dados).end()
-        }
-    })
-})
-
-
-//Rota de objetos
+// Rota para listar objetos
 app.get("/objetos", (req, res) => {
-    const sql = `SELECT * FROM objeto`
+    const sql = `SELECT * FROM objeto`;
+
     conn.query(sql, (erro, dados) => {
         if (erro) {
-            res.status(500).json(erro).end()
+            res.status(500).json(erro).end();
+        } else {
+            res.status(200).json(dados).end();
         }
-        else {
-            res.status(200).json(dados).end()
-        }
-    })
-})
+    });
+});
 
-
-//Rota pra conseguir acessar a pasta de imagens no back
-app.use("/images", express.static(__dirname + "/images"))
-//Rota para criar objettos
+// Rota para criar produtos
 app.post("/objetos/criar", (req, res) => {
-    const nome = req.body.nome
-    const hora = req.body.hora
-    const descricao = req.body.descricao
-    const img = Date.now().toString() + "_" + req.files.imagem.name
+    const { nome, hora, descricao } = req.body;
 
-    req.files.imagem.mv(__dirname + "/images/" + img)
+    if (!req.files || !req.files.imagem) {
+        return res.status(400).json({ error: "Imagem é obrigatória." });
+    }
 
-    const sql = `INSERT INTO objeto (nome_objeto, hora_entrada, descricao, foto) VALUES ('${nome}', 
-'${hora}', '${descricao}', '${img}')`
+    const imagem = req.files.imagem;
+    const imgNome = Date.now() + "_" + imagem.name;
+    const imgCaminho = path.join(__dirname, "/images/", imgNome);
 
-    conn.query(sql, (erro, dados) => {
-        if (erro) {
-            res.status(500).json(erro.sqlMessage).end()
+    imagem.mv(imgCaminho, (err) => {
+        if (err) {
+            return res.status(500).json({ error: "Erro ao salvar imagem." });
         }
-        else {
-            res.status(200).json("Produto Cadastrado com sucesso").end()
-        }
-    })
-})
+
+        const sql = `
+            INSERT INTO objeto (nome_objeto, hora_entrada, descricao, foto)
+            VALUES (?, ?, ?, ?)
+        `;
+
+        conn.query(sql, [nome, hora, descricao, imgNome], (erro) => {
+            if (erro) {
+                console.log(erro);
+                res.status(500).json({ error: "Erro ao inserir no banco." });
+            } else {
+                res.status(200).json({ message: "Produto cadastrado com sucesso." });
+            }
+        });
+    });
+});
 
 // Rota para deletar um produto
-app.delete("/objetos/excluir/:id", (req, res) => {
+app.get("/objetos/excluir/:id", (req, res) => {
     const id = req.params.id;
 
-    const sql = `DELETE FROM objeto WHERE id_objeto = ${id}`;
+    const sql = `DELETE FROM objeto WHERE id_objeto = ?`;
 
-    conn.query(sql, (erro) => {
+    conn.query(sql, [id], (erro) => {
         if (erro) {
             console.log(erro);
             res.status(500).json(erro.sqlMessage).end();
@@ -136,111 +137,67 @@ app.delete("/objetos/excluir/:id", (req, res) => {
     });
 });
 
-
-
-
-
-// Rota para deletar um usuário
-app.delete("/usuario/excluir/:id", (req, res) => {
+// Rota para selecionar um produto
+app.get("/objetos/edicao/:id", (req, res) => {
     const id = req.params.id;
 
-    const sql = `DELETE FROM usuario WHERE id_usuario = '${id}'`;
-    conn.query(sql, (erro) => {
+    const sql = `SELECT * FROM objeto WHERE id_objeto = ?`;
+
+    conn.query(sql, [id], (erro, dados) => {
         if (erro) {
             console.log(erro);
             res.status(500).json(erro.sqlMessage).end();
         } else {
-            res.status(200).json("Usuário deletado com sucesso").end();
+            res.status(200).json(dados).end();
         }
     });
 });
 
-// Rota para atualizar um usuario
-app.put("/usuario/editar/:id", (req, res) => {
-    const id = req.params.id;
-    const nome = req.body.nome
-    const cpf = req.body.cpf
-    const senha = req.body.senha
-    const tipo = req.body.tipo
-
-
-    const sql = `UPDATE usuario SET nome_usuario = '${nome}', cpf_usuario = '${cpf}', senha_usuario = '${senha}', tipo_usuario = '${tipo}' WHERE id_usuario = '${id}' `;
-
-    conn.query(sql, (erro) => {
-        if (erro) {
-            console.log(erro);
-            res.status(500).end();
-        } else {
-            res.status(200).end();
-        }
-    });
-});
-
-
-
-  
-
-
-// Rota para selecionar um objeto
-app.get("/objetos/edicao/:id", (req, res) => {
-    const id = req.params.id;
-    const sql = `SELECT * FROM objeto WHERE id_objeto = '${id}' `;
-
-    conn.query(sql, (erro, dados) => {
-        if (erro) {
-            console.log(erro);
-        } else {
-            res.json(dados);
-            res.end();
-        }
-    });
-});
-
-// Rota para atualizar um objeto
+// Rota para atualizar um produto
 app.put("/objetos/editar/:id", (req, res) => {
     const id = req.params.id;
-    const nome = req.body.nome
-    const hora = req.body.hora
-    const img = req.body.imagem
-    const descricao = req.body.descricao
+    const { nome, hora, descricao } = req.body;
+    let img = null;
 
-    const sql = `UPDATE objeto SET nome_objeto = '${nome}', hora_entrada = '${hora}', foto = '${img}', descricao = '${descricao}', status = 'achado' WHERE id_objeto = '${id}' `;
+    // Se uma nova imagem for enviada, use-a
+    if (req.files && req.files.imagem) {
+        img = Date.now() + "_" + req.files.imagem.name;
+        const imgCaminho = path.join(__dirname, "/images/", img);
 
-    conn.query(sql, (erro) => {
-        if (erro) {
-            console.log(erro);
-            res.status(500).end();
-        } else {
-            res.status(200).end();
+        req.files.imagem.mv(imgCaminho, (err) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).json({ error: "Erro ao salvar imagem." });
+            }
+        });
+    }
+
+    // Recuperar a imagem antiga do banco de dados, caso nenhuma nova seja enviada
+    const sqlFetchFoto = `SELECT foto FROM objeto WHERE id_objeto = ?`;
+    conn.query(sqlFetchFoto, [id], (fetchError, result) => {
+        if (fetchError) {
+            console.log(fetchError);
+            return res.status(500).json({ error: "Erro ao buscar imagem existente." });
         }
+
+        img = img || result[0]?.foto; // Usa a imagem existente se nenhuma nova for enviada
+
+        const sqlUpdate = `
+            UPDATE objeto 
+            SET nome_objeto = ?, hora_entrada = ?, descricao = ?, foto = ? 
+            WHERE id_objeto = ?
+        `;
+        conn.query(sqlUpdate, [nome, hora, descricao, img, id], (updateError) => {
+            if (updateError) {
+                console.log(updateError);
+                return res.status(500).json({ error: "Erro ao atualizar objeto." });
+            }
+            res.status(200).json({ message: "Produto atualizado com sucesso." });
+        });
     });
 });
 
-
-//Rota padrão
+// Rota padrão
 app.get("/", (req, res) => {
-    res.status(200)
-    res.end()
-})
-
-//Configura a conexão
-const conn = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "achadosperdidos"
-})
-
-//Código para conexão com o banco
-conn.connect((erro) => {
-    if (erro) {
-        console.log(erro)
-    }
-    else {
-        console.log("Conectado com sucesso")
-        //Iniciando o servidor
-        app.listen(port, () => {
-            console.log(`Servidor rodando na porta ${port}`)
-        })
-    }
-})
+    res.status(200).json("Servidor rodando.").end();
+});
