@@ -15,9 +15,18 @@ const Home = () => {
     navigate("/cadastrarobjeto");
   };
 
-  const btnFilter = () => {
-    // Implementação do filtro aqui
+  const [filtroStatus, setFiltroStatus] = useState(null);
+
+
+  const btnFilter = (status) => {
+    setFiltroStatus(status);
   };
+
+  const objetosFiltrados = filtroStatus
+  ? objetos.filter((obj) => obj.status.toLowerCase() === filtroStatus.toLowerCase())
+  : objetos;
+
+  
 
   useEffect(() => {
     async function fetchData() {
@@ -38,15 +47,30 @@ const Home = () => {
       <button onClick={handleSubmitObject} className={styles.addButton}>+ OBJETO</button>
   
       <div className={styles.legend}>
-        <div className={styles.legendItem}>
-          <button onClick={btnFilter} className={styles.btnAchado}></button>
-          Achado
-        </div>
-        <div className={styles.legendItem}>
-          <button className={styles.btnPerdido}></button>
-          Perdido
-        </div>
-      </div>
+  <div className={styles.legendItem}>
+    <button
+      onClick={() => btnFilter("achado")}
+      className={`${styles.btnAchado} ${filtroStatus === "achado" ? styles.active : ""}`}
+    ></button>
+    Achado
+  </div>
+  <div className={styles.legendItem}>
+    <button
+      onClick={() => btnFilter("perdido")}
+      className={`${styles.btnPerdido} ${filtroStatus === "perdido" ? styles.active : ""}`}
+    ></button>
+    Perdido
+  </div>
+  <div className={styles.legendItem}>
+    <button
+      onClick={() => btnFilter(null)}
+      className={styles.filterButton}
+    >
+      Todos
+    </button>
+  </div>
+</div>
+
 
       <div className={styles.listaObjetos}>
         {objetos.map((obj) => (
