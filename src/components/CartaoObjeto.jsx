@@ -1,11 +1,16 @@
 import React from "react";
 import styles from "./CartaoObjeto.module.css";
-
+import { useNavigate } from "react-router-dom";
 
 const CartaoObjeto = (props) => {
-  return (
-   <div className={styles.card}>
+  const navigate = useNavigate();
 
+  const handleSelect = () => {
+    navigate(`/infoobjetos/${props.id}`);
+  };
+
+  return (
+    <div className={styles.card}>
       <div className={styles.imageContainer}>
         {props.imagemUrl ? (
           <img
@@ -31,10 +36,7 @@ const CartaoObjeto = (props) => {
           </span>
         </div>
         <p className={styles.descricao}>{props.descricao}</p>
-        <button
-          className={styles.selectButton}
-          onClick={() => props.onSelecionar(props.id)}
-        >
+        <button className={styles.selectButton} onClick={handleSelect}>
           Selecionar
         </button>
       </div>

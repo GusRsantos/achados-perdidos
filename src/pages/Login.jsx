@@ -24,10 +24,12 @@ const Login = () => {
 
       if (res.ok) {
         const user = await res.json();
+        const userData = user[0]; // Supondo que o backend retorna um array com um único usuário
 
-        // Gravar dados do usuário autenticado no localStorage
-        localStorage.setItem('user', JSON.stringify(user[0])); // Assume que o backend retorna um array com o usuário
+        // Gravar dados do usuário e sua função (tipo_usuario)
+        localStorage.setItem('user', JSON.stringify(userData));
         localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('userType', userData.tipo_usuario); // Armazenar tipo do usuário
 
         alert("Login realizado com sucesso!");
         navigate('/home');

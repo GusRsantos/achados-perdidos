@@ -41,55 +41,42 @@ const CadastrarObjeto = () => {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Cliquei");
-    console.log(nome);
-    
-  
-    if (nome && hora && descricao && img) {
-      const formData = new FormData();
-      formData.append("nome", nome);
-      formData.append("hora", hora);
-      formData.append("descricao", descricao);
-      formData.append("img", img); // Adiciona a imagem
-  
-      try {
-        const req = await fetch("http://localhost:5000/objetos/criar", {
-          method: "POST",
-          body: formData, // FormData no corpo
-        });
-  
-        if (req.ok) {
-          alert("Produto cadastrado com sucesso");
-          setNome("");
-          setHora("");
-          setImagem("");
-          setDescricao("");
-          navigate("/home");
-        } else {
-          alert("Erro ao cadastrar");
-        }
-      } catch (error) {
-        console.error("Erro na requisição:", error);
-        alert("Erro na requisição. Verifique o console.");
-      }
-    } else {
-      if (!nome) {
-        setAlertaClass("mb-3");
-        setAlertaMensagem("O campo nome do objeto não pode ser vazio");
-      } else if (!hora) {
-        setAlertaClass("mb-3");
-        setAlertaMensagem("O campo hora não pode ser vazio");
-      } else if (!descricao) {
-        setAlertaClass("mb-3");
-        setAlertaMensagem("O campo descrição não pode ser vazio");
-      } else if (!img) {
-        setAlertaClass("mb-3");
-        setAlertaMensagem("A imagem não pode ser vazia");
-      }
-    }
-  };
-  
 
+    if (nome && hora && descricao && img) {
+        const formData = new FormData();
+        formData.append("nome", nome);
+        formData.append("hora", hora);
+        formData.append("descricao", descricao);
+        formData.append("imagem", img); // Nome corrigido para coincidir com o backend
+
+        try {
+            const response = await fetch("http://localhost:5000/objetos/criar", {
+                method: "POST",
+                body: formData
+            });
+
+            if (response.ok) {
+                alert("Produto cadastrado com sucesso!");
+                setNome("");
+                setHora("");
+                setDescricao("");
+                setImagem(null);
+                setFotoPreview(null);
+                navigate("/home");
+            } else {
+                const error = await response.json();
+                alert(error.error || "Erro ao cadastrar o produto.");
+            }
+        } catch (error) {
+            console.error("Erro na requisição:", error);
+            alert("Erro na requisição. Verifique o console.");
+        }
+    } else {
+        alert("Todos os campos são obrigatórios!");
+    }
+};
+
+  
 
   return (
     <div className={styles.container}>
