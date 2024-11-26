@@ -35,6 +35,9 @@ VALUES ('GUSTAVO RESERVA', '12345678901', '54321', 'administrador'),
 ('GREGORY MELOSO', '40582493857', '67890', 'funcionario'),
 ('CREUSA SOUZA', '7534283714', '12134', 'funcionario');
  
-  
+
+SELECT foto FROM objeto WHERE id_objeto = 3;
+
+  SELECT * FROM objeto WHERE id_objeto = 1;
 select * from usuario;
 select * from objeto;
