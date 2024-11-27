@@ -77,7 +77,7 @@ const CadastrarUsuario = () => {
           <div className={styles.formGroup}>
             <br />
             <br />
-            <label htmlFor="nome">Nome completo:</label>
+            <label htmlFor="nome">Nome:</label>
             <input
               type="text"
               id="nome"

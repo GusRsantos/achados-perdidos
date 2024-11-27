@@ -109,7 +109,6 @@ const ListaUsuarios = () => {
               <th>CPF</th>
               <th>Senha</th>
               <th>Tipo</th>
-              <th>******</th>
               <th colSpan="2">Ações</th>
             </tr>
           </thead>
@@ -170,7 +169,6 @@ const ListaUsuarios = () => {
                     user.tipo_usuario
                   )}
                 </td>
-                <td>******</td>
                 <td>
                   <button
                     onClick={async () => {

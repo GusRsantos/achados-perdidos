@@ -75,6 +75,55 @@ app.get("/usuario/entrar", (req, res) => {
     });
 });
 
+//Rota de usuarios
+app.get("/usuario", (req, res) => {
+    const sql = `SELECT * FROM usuario`
+    conn.query(sql, (erro, dados) => {
+        if (erro) {
+            res.status(500).json(erro).end()
+        }
+        else {
+            res.status(200).json(dados).end()
+        }
+    })
+})
+
+// Rota para deletar um usuário
+app.delete("/usuario/excluir/:id", (req, res) => {
+    const id = req.params.id;
+
+    const sql = `DELETE FROM usuario WHERE id_usuario = '${id}'`;
+    conn.query(sql, (erro) => {
+        if (erro) {
+            console.log(erro);
+            res.status(500).json(erro.sqlMessage).end();
+        } else {
+            res.status(200).json("Usuário deletado com sucesso").end();
+        }
+    });
+});
+
+// Rota para atualizar um usuario
+app.put("/usuario/editar/:id", (req, res) => {
+    const id = req.params.id;
+    const nome = req.body.nome
+    const cpf = req.body.cpf
+    const senha = req.body.senha
+    const tipo = req.body.tipo
+
+
+    const sql = `UPDATE usuario SET nome_usuario = '${nome}', cpf_usuario = '${cpf}', senha_usuario = '${senha}', tipo_usuario = '${tipo}' WHERE id_usuario = '${id}' `;
+
+    conn.query(sql, (erro) => {
+        if (erro) {
+            console.log(erro);
+            res.status(500).end();
+        } else {
+            res.status(200).end();
+        }
+    });
+});
+
 // Rota para listar objetos
 app.get("/objetos", (req, res) => {
     const sql = `SELECT * FROM objeto`;
@@ -88,7 +137,7 @@ app.get("/objetos", (req, res) => {
     });
 });
 
-// Rota para criar produtos
+// Rota para criar objetos
 app.post("/objetos/criar", (req, res) => {
     const { nome, hora, descricao } = req.body;
 
@@ -199,33 +248,5 @@ app.put("/objetos/editar/:id", (req, res) => {
 
 // Rota padrão
 app.get("/", (req, res) => {
-<<<<<<< HEAD
     res.status(200).json("Servidor rodando.").end();
 });
-=======
-    res.status(200)
-    res.end()
-})
-
-//Configura a conexão
-const conn = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "Morningstar_20",
-    database: "achadosperdidos"
-})
-
-//Código para conexão com o banco
-conn.connect((erro) => {
-    if (erro) {
-        console.log(erro)
-    }
-    else {
-        console.log("Conectado com sucesso")
-        //Iniciando o servidor
-        app.listen(port, () => {
-            console.log(`Servidor rodando na porta ${port}`)
-        })
-    }
-})
->>>>>>> joy-branch
