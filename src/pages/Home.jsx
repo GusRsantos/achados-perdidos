@@ -7,6 +7,7 @@ const Home = () => {
   const navigate = useNavigate();
   const [objetos, setObjetos] = useState([]);
 
+
   const handleSelect = (id) => {
     navigate(`/infoobjetos/${id}`);
   };
