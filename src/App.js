@@ -13,11 +13,17 @@ import InfoObjetos from './pages/InfoObjetos';
 import CadastrarUsuario from "./pages/CadastrarUsuario";
 import ListaUsuarios from './pages/ListaUsuarios';
 
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = ({ children, allowedRoles }) => {
   const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-  
+  const userType = localStorage.getItem('userType'); // Recupera o tipo de usuário (admin ou funcionario)
+
   if (!isAuthenticated) {
     return <Navigate to="/" replace />;
+  }
+
+  // Permitir acesso apenas se o tipo de usuário for adequado
+  if (allowedRoles && !allowedRoles.includes(userType)) {
+    return <Navigate to="/home" replace />; // Redireciona para a home ou outra página se o tipo for inválido
   }
 
   return children;
@@ -30,59 +36,66 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Login />} />
-            
+
             <Route
               path="/home"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute allowedRoles={['administrador', 'funcionario']}>
                   <NavBarra />
                   <Home />
                 </ProtectedRoute>
               }
             />
-            <Route path="/infoobjetos/:id" element={
-               <ProtectedRoute>
-               <NavBarra />
-               <InfoObjetos />
-             </ProtectedRoute>
-             } />
+
+            <Route
+              path="/infoobjetos/:id"
+              element={
+                <ProtectedRoute allowedRoles={['administrador', 'funcionario']}>
+                  <NavBarra />
+                  <InfoObjetos />
+                </ProtectedRoute>
+              }
+            />
 
             <Route
               path="/cadastrarobjeto"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute allowedRoles={['administrador', 'funcionario']}>
                   <NavBarra />
                   <CadastrarObjeto />
                 </ProtectedRoute>
               }
             />
+
             <Route
               path="/retirarobjeto"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute allowedRoles={['administrador', 'funcionario']}>
                   <NavBarra />
                   <RetirarObjeto />
                 </ProtectedRoute>
               }
             />
+
             <Route
-            path="/listausuarios"
+              path="/listausuarios"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute allowedRoles={['administrador']}>
                   <NavBarra />
-                  <ListaUsuarios/>
+                  <ListaUsuarios />
                 </ProtectedRoute>
               }
-              />
-               <Route
-            path="/cadastrarusuario"
+            />
+
+            <Route
+              path="/cadastrarusuario"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute allowedRoles={['administrador']}>
                   <NavBarra />
-                  <CadastrarUsuario/>
+                  <CadastrarUsuario />
                 </ProtectedRoute>
               }
-              />
+            />
           </Routes>
         </BrowserRouter>
       </ObjectProvider>

@@ -199,5 +199,33 @@ app.put("/objetos/editar/:id", (req, res) => {
 
 // Rota padrão
 app.get("/", (req, res) => {
+<<<<<<< HEAD
     res.status(200).json("Servidor rodando.").end();
 });
+=======
+    res.status(200)
+    res.end()
+})
+
+//Configura a conexão
+const conn = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "Morningstar_20",
+    database: "achadosperdidos"
+})
+
+//Código para conexão com o banco
+conn.connect((erro) => {
+    if (erro) {
+        console.log(erro)
+    }
+    else {
+        console.log("Conectado com sucesso")
+        //Iniciando o servidor
+        app.listen(port, () => {
+            console.log(`Servidor rodando na porta ${port}`)
+        })
+    }
+})
+>>>>>>> joy-branch
