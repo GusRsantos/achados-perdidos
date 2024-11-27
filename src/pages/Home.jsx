@@ -1,46 +1,91 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import styles from './Home.module.css';
-import logo from "../images/logo-senai.png";
-import CartaoObjeto from '../components/CartaoObjeto';
+import CartaoObjeto from "../components/CartaoObjeto";
 
-function Home() {
-  const objetos = [
-    { name: 'Garrafa Stanley', status: 'Achado' },
-    { name: 'Garrafa Farm', status: 'Perdido' },
-    { name: 'Garrafa Pacco', status: 'Achado' },
-    { name: 'Garrafa Tupperware', status: 'Perdido' },
-  ];
-  console.log(objetos);
+const Home = () => {
+  const navigate = useNavigate();
+  const [objetos, setObjetos] = useState([]);
 
+  const handleSelect = (id) => {
+    navigate(`/infoobjetos/${id}`);
+  };
+
+  const handleSubmitObject = () => {
+    navigate("/cadastrarobjeto");
+  };
+
+  const [filtroStatus, setFiltroStatus] = useState(null);
+
+
+  const btnFilter = (status) => {
+    setFiltroStatus(status);
+  };
+
+  const objetosFiltrados = filtroStatus
+  ? objetos.filter((obj) => obj.status.toLowerCase() === filtroStatus.toLowerCase())
+  : objetos;
+
+  
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const res = await fetch("http://localhost:5000/objetos");
+        const objs = await res.json();
+        setObjetos(objs);
+      } catch (error) {
+        console.error("Erro ao buscar objetos:", error.message);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
-        <img src={logo} alt="Logo Senai" className={styles.logo} />
-        <div className={styles.searchContainer}>
-          <input type="text" placeholder="Buscar..." className={styles.searchInput} />
-          <i className="bi bi-search" style={{ color: 'blue', marginLeft: '8px' }}></i>
-        </div>
-      </header>
+      <button onClick={handleSubmitObject} className={styles.addButton}>+ OBJETO</button>
+  
+      <div className={styles.legend}>
+  <div className={styles.legendItem}>
+    <button
+      onClick={() => btnFilter("achado")}
+      className={`${styles.btnAchado} ${filtroStatus === "achado" ? styles.active : ""}`}
+    ></button>
+    Achado
+  </div>
+  <div className={styles.legendItem}>
+    <button
+      onClick={() => btnFilter("perdido")}
+      className={`${styles.btnPerdido} ${filtroStatus === "perdido" ? styles.active : ""}`}
+    ></button>
+    Perdido
+  </div>
+  <div className={styles.legendItem}>
+    <button
+      onClick={() => btnFilter(null)}
+      className={styles.filterButton}
+    >
+      Todos
+    </button>
+  </div>
+</div>
 
-      <hr className={styles.divider} />
 
-      <button className={styles.addButton}>+ OBJETO</button>
-
-      <main className={styles.mainContent}>
-        <div className={styles.legend}>
-          <span className={styles.achado}>Achado</span>
-          <span className={styles.perdido}>Perdido</span>
-        </div>
-
-        <div className={styles.cartoesContainer}>
-          {objetos.map((objeto, index) => (
-            <CartaoObjeto key={index} name={objeto.name} status={objeto.status} />
-          ))}
-        </div>
-      </main>
+      <div className={styles.listaObjetos}>
+        {objetos.map((obj) => (
+          <CartaoObjeto
+            key={obj.id_objeto}
+            id={obj.id_objeto}
+            nome={obj.nome_objeto}
+            status={obj.status}
+            imagemUrl={`http://localhost:5000/images/${obj.foto}`} 
+            Selecionar={() => handleSelect(obj.id_objeto)}
+          />
+        ))}
+      </div>
     </div>
   );
-}
+};
 
 export default Home;

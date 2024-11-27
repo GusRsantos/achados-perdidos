@@ -1,29 +1,91 @@
+import React from 'react';
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import logo from './images/logo-senai.png'; // Corrigido para o caminho correto
-
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { ObjectProvider } from './context/ObjectContext';
 
 import NavBarra from "./components/NavBarra";
 import Login from "./pages/Login";
 import CadastrarObjeto from "./pages/CadastrarObjeto";
 import RetirarObjeto from "./pages/RetirarObjeto";
 import Home from './pages/Home';
+import InfoObjetos from './pages/InfoObjetos';
+import CadastrarUsuario from "./pages/CadastrarUsuario";
+import ListaUsuarios from './pages/ListaUsuarios';
+
+const ProtectedRoute = ({ children }) => {
+  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+};
 
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<Login />} /> {/* Rota da tela de login sem NavBarra */}
-          <Route element={<NavBarra />}> {/* NavBarra será exibida em rotas aninhadas */}
-            <Route path='/home' element={<Home />} />
-            <Route path='/navbarra' element={<NavBarra />} />
-            <Route path='/cadastrarobjeto' element={<CadastrarObjeto />} />
-            <Route path='/retirarobjeto' element={<RetirarObjeto />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <ObjectProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            
+            <Route
+              path="/home"
+              element={
+                <ProtectedRoute>
+                  <NavBarra />
+                  <Home />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/infoobjetos/:id" element={
+               <ProtectedRoute>
+               <NavBarra />
+               <InfoObjetos />
+             </ProtectedRoute>
+             } />
+
+            <Route
+              path="/cadastrarobjeto"
+              element={
+                <ProtectedRoute>
+                  <NavBarra />
+                  <CadastrarObjeto />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/retirarobjeto"
+              element={
+                <ProtectedRoute>
+                  <NavBarra />
+                  <RetirarObjeto />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+            path="/listausuarios"
+              element={
+                <ProtectedRoute>
+                  <NavBarra />
+                  <ListaUsuarios/>
+                </ProtectedRoute>
+              }
+              />
+               <Route
+            path="/cadastrarusuario"
+              element={
+                <ProtectedRoute>
+                  <NavBarra />
+                  <CadastrarUsuario/>
+                </ProtectedRoute>
+              }
+              />
+          </Routes>
+        </BrowserRouter>
+      </ObjectProvider>
     </div>
   );
 }

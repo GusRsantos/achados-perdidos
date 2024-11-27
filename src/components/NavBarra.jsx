@@ -1,45 +1,68 @@
-import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import Offcanvas from 'react-bootstrap/Offcanvas';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Navbar, Container, Nav } from 'react-bootstrap';
+import { FaUsers, FaSignOutAlt } from 'react-icons/fa';
 import styles from './NavBarra.module.css';
 import logo from "../images/logo-senai.png";
 
 const NavBarra = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('isAuthenticated');
+    navigate('/');
+  };
+
+  const handleReturnOnImage = () => {
+    navigate('/home');
+  };
+
+  const handleUsuarios = () => {
+    navigate('/listausuarios');
+  };
+
   return (
-    <nav>
-      <div>
-      <>
-      {[false].map((expand) => (
-        <Navbar  key={expand} expand={expand} className={styles.navbar}>
-          <Container fluid>
-        <img src={logo} alt="Logo Senai" className={styles.logo} />
-            <input type="text" placeholder="Buscar..." className={styles.searchBar} />
-            <Navbar.Toggle aria-controls="basic-navbar-nav" className={styles.toggle}/>
-            <Navbar.Offcanvas
-              id={`offcanvasNavbar-expand-${expand}`}
-              aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
-              placement="end"
-            >
-              <Offcanvas.Header closeButton>
-              </Offcanvas.Header>
-              <Offcanvas.Body>
-                <Nav className="justify-content-end flex-grow-1 pe-3">
-                  <Nav.Link href="#action1">Perfil</Nav.Link>
-                  <Nav.Link href="/login">Sair</Nav.Link>
-                </Nav>
-              </Offcanvas.Body>
-            </Navbar.Offcanvas>
-          </Container>
-        </Navbar>
-      ))}
-    </>
-      </div>
-    </nav>
+    <Navbar className={styles.navbar} expand={false}>
+      <Container fluid className={styles.container}>
+        <div className={styles.logo}>
+          <img src={logo} alt="Logo Senai" className={styles.logo} onClick={handleReturnOnImage}/>
+        </div>
+        <div className={styles.searchContainer}>
+          <input
+            type="text"
+            placeholder="Buscar..."
+            className={styles.searchInput}
+          />
+          <button className={styles.searchButton}>
+            <img 
+              src={"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxjaXJjbGUgY3g9IjExIiBjeT0iMTEiIHI9IjgiPjwvY2lyY2xlPjxsaW5lIHgxPSIyMSIgeTE9IjIxIiB4Mj0iMTYuNjUiIHkyPSIxNi42NSI+PC9saW5lPjwvc3ZnPg=="} 
+              alt="Buscar"
+              className={styles.searchIcon}
+            />
+          </button>
+        </div>
+
+        <Navbar.Toggle 
+          aria-controls="navbar-nav" 
+          className={styles.toggleButton}
+        >
+          <span className={styles.hamburgerIcon}></span>
+        </Navbar.Toggle>
+
+        <Navbar.Collapse id="navbar-nav">
+          <Nav className="ms-auto">
+            <Nav.Link onClick={handleUsuarios} className={styles.navLink}>
+              <FaUsers className={styles.navIcon} />
+              Usuários
+            </Nav.Link>
+            <Nav.Link onClick={handleLogout} className={styles.navLink}>
+              <FaSignOutAlt className={styles.navIcon} />
+              Sair
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 };
 
