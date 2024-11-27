@@ -68,7 +68,7 @@ function App() {
             />
 
             <Route
-              path="/retirarobjeto"
+              path="/retirarobjeto/:id"
               element={
                 <ProtectedRoute allowedRoles={['administrador', 'funcionario']}>
                   <NavBarra />

@@ -71,6 +71,22 @@
   display: inline-block;
 }
 
+
+.btnMostrarTodos {
+  width: 8px;
+  height: 8px;
+  background-color: #000000;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.btnMostrarTodos:hover {
+  background-color: #0056b3;
+}
+
+
+
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));

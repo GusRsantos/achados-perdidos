@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Container, Nav } from 'react-bootstrap';
 import { FaUsers, FaSignOutAlt } from 'react-icons/fa';
@@ -7,6 +7,8 @@ import logo from "../images/logo-senai.png";
 
 const NavBarra = () => {
   const navigate = useNavigate();
+  const [termoBusca, setTermoBusca] = useState("");
+  const [sugestoes, setSugestoes] = useState([]);
 
   const handleLogout = () => {
     localStorage.removeItem('isAuthenticated');
@@ -21,17 +23,42 @@ const NavBarra = () => {
     navigate('/listausuarios');
   };
 
+  // Função para buscar objetos no backend
+  const buscarObjetos = async (termo) => {
+    if (!termo) {
+      setSugestoes([]);
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:5000/objetos/buscar?termo=${termo}`);
+      const data = await response.json();
+      setSugestoes(data);
+    } catch (error) {
+      console.error("Erro ao buscar objetos:", error);
+    }
+  };
+
+  // Função para lidar com a entrada de texto na busca
+  const handleChange = (e) => {
+    const termo = e.target.value;
+    setTermoBusca(termo);
+    buscarObjetos(termo);
+  };
+
   return (
     <Navbar className={styles.navbar} expand={false}>
       <Container fluid className={styles.container}>
         <div className={styles.logo}>
-          <img src={logo} alt="Logo Senai" className={styles.logo} onClick={handleReturnOnImage}/>
+          <img src={logo} alt="Logo Senai" className={styles.logo} onClick={handleReturnOnImage} />
         </div>
         <div className={styles.searchContainer}>
           <input
             type="text"
             placeholder="Buscar..."
             className={styles.searchInput}
+            value={termoBusca}
+            onChange={handleChange}
           />
           <button className={styles.searchButton}>
             <img 
@@ -40,6 +67,20 @@ const NavBarra = () => {
               className={styles.searchIcon}
             />
           </button>
+          {/* Dropdown de sugestões */}
+          {sugestoes.length > 0 && (
+            <ul className={styles.suggestions}>
+              {sugestoes.map((sugestao) => (
+                <li 
+                  key={sugestao.id_objeto}
+                  onClick={() => navigate(`/infoobjetos/${sugestao.id_objeto}`)}
+                  className={styles.suggestionItem}
+                >
+                  {sugestao.nome_objeto}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
         <Navbar.Toggle 
