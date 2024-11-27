@@ -1,23 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { Modal } from 'react-bootstrap';
+import { useParams, useNavigate } from 'react-router-dom';
 import styles from './InfoObjetos.module.css';
+import { Modal } from 'react-bootstrap';
 import { useObjects } from '../context/ObjectContext';
-import Form from "react-bootstrap/Form";
-
 export default function InfoObjetos() {
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const location = useLocation();
+ const { objects, updateObject } = useObjects(); 
+  const { id } = useParams();
   const navigate = useNavigate();
-  const { objects, updateObject } = useObjects(); 
-  const [objetoAtual, setObjetoAtual] = useState(location.state?.objeto || {});
+  const [objetoAtual, setObjetoAtual] = useState({});
 
   useEffect(() => {
-    const objetoId = location.pathname.split('/').pop();
-    const objetoEncontrado = objects.find(obj => obj.id === objetoId) || location.state?.objeto || {};
-    setObjetoAtual(objetoEncontrado);
-  }, [location, objects]);
+    async function fetchObjectData() {
+      try {
+        const response = await fetch(`http://localhost:5000/objetos/edicao/${id}`);
+        const data = await response.json();
+        console.log("Dados retornados pela API:", data);
+  
+        if (data) {
+          setObjetoAtual(data[0]); // Ajuste aqui se a API já retorna o objeto diretamente
+        }
+      } catch (error) {
+        console.error("Erro ao buscar dados do objeto:", error);
+      }
+    }
+  
+    fetchObjectData();
+  }, [id]);
+  
 
   const handleVoltar = () => {
     navigate('/home');
@@ -35,82 +46,89 @@ export default function InfoObjetos() {
     setIsEditing(true);
   };
 
-  const handleSalvar = () => {
-    updateObject(objetoAtual);
-    setIsEditing(false);
+  const handleSalvar = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/objetos/editar/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nome: objetoAtual.nome_objeto,
+          hora: objetoAtual.hora_entrada,
+          descricao: objetoAtual.descricao,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Erro ao salvar as alterações.");
+      }
+  
+      const data = await response.json();
+      console.log("Alterações salvas com sucesso:", data);
+  
+      setIsEditing(false);
+      alert("Alterações salvas com sucesso!");
+    } catch (error) {
+      console.error("Erro ao salvar alterações:", error);
+      alert("Não foi possível salvar as alterações.");
+    }
   };
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setObjetoAtual(prev => ({ ...prev, [name]: value }));
-  };
+  };  
+
 
   return (
     <div className={styles.pageContainer}>
       <div className={styles.contentContainer}>
+  
         <h2 className={styles.title}>Informações do objeto</h2>
-        
-        <div className={styles.formContainer}>
+       
+          <div className={styles.formContainer}>
           <div className={styles.mainSection}>
             <div className={styles.imageContainer}>
-              <img 
-                src={objetoAtual.foto || "https://via.placeholder.com/200"} 
-                alt={objetoAtual.nome} 
-                className={styles.objectImage} 
+              <img
+                src={objetoAtual.foto ? `http://localhost:5000/images/${objetoAtual.foto}` : "https://via.placeholder.com/200"}
+                alt={objetoAtual.nome_objeto}
+                className={styles.objectImage}
               />
             </div>
+
             <div className={styles.fieldsContainer}>
+              <label>descrição</label>
               <input
                 type="text"
-                name="nome"
-                value={objetoAtual.nome || ''}
+                 name="nome"
+                value={objetoAtual.nome_objeto || ''}
                 onChange={handleChange}
                 readOnly={!isEditing}
                 className={styles.input}
               />
               <input
                 type="text"
-                name="dataEncontro"
-                value={objetoAtual.dataEncontro || ''}
+                name="hora"
+                value={objetoAtual.hora_entrada || ''}
                 onChange={handleChange}
                 readOnly={!isEditing}
                 className={styles.input}
               />
               <input
                 type="text"
-                name="localEncontro"
-                value={objetoAtual.localEncontro || ''}
+                name="descricao"
+                value={objetoAtual.descricao || ''}
                 onChange={handleChange}
                 readOnly={!isEditing}
                 className={styles.input}
-              />
-              <input
-                type="text"
-                name="encontradoPor"
-                value={objetoAtual.encontradoPor || ''}
-                onChange={handleChange}
-                readOnly={!isEditing}
-                className={styles.input}
-              />
+              />           
             </div>
           </div>
-          
+
           <div className={styles.bottomSection}>
-            <div className={styles.statusSection}>
-            <Form.Group controlId="formGridStatus">
-              <Form.Select
-                value={objetoAtual.status}
-                name="status"
-                onChange={handleChange}
-                readOnly={!isEditing}
-                className={styles.Input}
-              >
-                <option>Achado</option>
-                <option>Perdido</option>
-              </Form.Select>
-            </Form.Group>
-              
-              <div className={styles.buttonGroup}>
+          <div className={styles.buttonGroup}>
                 <button 
                   onClick={handleVoltar}
                   className={styles.buttonVoltar}
@@ -139,23 +157,7 @@ export default function InfoObjetos() {
                   </button>
                 )}
               </div>
-            </div>
-            
-            <div className={styles.observacoesSection}>
-              <label>Observações:</label>
-              <textarea
-                name="observacoes"
-                value={objetoAtual.observacoes || ''}
-                onChange={handleChange}
-                readOnly={!isEditing}
-                className={styles.observacoesInput}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <Modal 
+              <Modal 
         show={showModal} 
         onHide={() => setShowModal(false)} 
         centered
@@ -179,6 +181,11 @@ export default function InfoObjetos() {
           </div>
         </Modal.Body>
       </Modal>
+
+
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

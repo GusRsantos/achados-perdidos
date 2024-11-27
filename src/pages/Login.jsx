@@ -4,16 +4,12 @@ import { Form, Button, Alert } from 'react-bootstrap';
 import styles from './Login.module.css';
 import logo from "../images/logo-senai.png";
 
-const url = "http://localhost:5000/objetosOriginais";
-
-function Login() {
+const Login = () => {
   const [cpf, setCpf] = useState('');
   const [senha, setSenha] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-
-  const [alertaMensagem, setAlertaMensagem] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,16 +17,21 @@ function Login() {
     setIsLoading(true);
 
     try {
-      // Simulando uma verificação de login
-      if (cpf === "12345678911" && senha === "12345") {
-        // Simulando um delay de rede
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        // Armazenar informação de que o usuário está logado
+      const res = await fetch(`http://localhost:5000/usuario/entrar?cpf=${cpf}&senha=${senha}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      if (res.ok) {
+        const user = await res.json();
+        const userData = user[0]; // Supondo que o backend retorna um array com um único usuário
+
+        // Gravar dados do usuário e sua função (tipo_usuario)
+        localStorage.setItem('user', JSON.stringify(userData));
         localStorage.setItem('isAuthenticated', 'true');
-        
-        
-        alert("Usuário cadastrado com sucesso");
+        localStorage.setItem('userType', userData.tipo_usuario); // Armazenar tipo do usuário
+
+        alert("Login realizado com sucesso!");
         navigate('/home');
       } else {
         setError('CPF ou senha incorretos');
@@ -46,7 +47,7 @@ function Login() {
     <div className={styles.container}>
       <Form onSubmit={handleSubmit} className={styles.card}>
         <div className={styles.logoContainer}>
-        <img src={logo} alt="Logo Senai" className={styles.logo}/>
+          <img src={logo} alt="Logo Senai" className={styles.logo} />
         </div>
 
         {error && (
@@ -79,8 +80,8 @@ function Login() {
           />
         </Form.Group>
 
-        <Button 
-          type="submit" 
+        <Button
+          type="submit"
           className={styles.button}
           disabled={isLoading}
         >
@@ -89,6 +90,6 @@ function Login() {
       </Form>
     </div>
   );
-}
+};
 
 export default Login;

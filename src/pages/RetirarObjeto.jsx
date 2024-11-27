@@ -11,20 +11,14 @@ const RetirarObjeto = () => {
   const navigate = useNavigate();
   const { removeObject } = useObjects();
 
-  // Verifica se o objeto foi passado pela navegação
   const objeto = location.state?.objeto;
 
-  
-
-  // Função para manipular o evento de retirada
   const handleSubmit = (e) => {
     e.preventDefault();
     removeObject(objeto.id);
     alert(`O objeto "${objeto.nome}" foi retirado.`);
     navigate('/home');
   };
-
-
 
   return (
     <div className={styles.container}>
