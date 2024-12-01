@@ -186,7 +186,7 @@ app.get("/objetos/excluir/:id", (req, res) => {
     });
 });
 
-// Rota para selecionar um produto
+// Rota para selecionar um objeto
 app.get("/objetos/edicao/:id", (req, res) => {
     const id = req.params.id;
 
@@ -202,49 +202,59 @@ app.get("/objetos/edicao/:id", (req, res) => {
     });
 });
 
-// Rota para atualizar um produto
+
+
+
+// Rota para atualizar um objeto
 app.put("/objetos/editar/:id", (req, res) => {
     const id = req.params.id;
-    const { nome, hora, descricao } = req.body;
-    let img = null;
 
-    // Se uma nova imagem for enviada, use-a
-    if (req.files && req.files.imagem) {
-        img = Date.now() + "_" + req.files.imagem.name;
-        const imgCaminho = path.join(__dirname, "/images/", img);
-
-        req.files.imagem.mv(imgCaminho, (err) => {
-            if (err) {
-                console.log(err);
-                return res.status(500).json({ error: "Erro ao salvar imagem." });
-            }
-        });
+    // Validar dados recebidos
+    if (!id || isNaN(id)) {
+        return res.status(400).json({ error: "ID inválido." });
     }
 
-    // Recuperar a imagem antiga do banco de dados, caso nenhuma nova seja enviada
-    const sqlFetchFoto = `SELECT foto FROM objeto WHERE id_objeto = ?`;
-    conn.query(sqlFetchFoto, [id], (fetchError, result) => {
-        if (fetchError) {
-            console.log(fetchError);
-            return res.status(500).json({ error: "Erro ao buscar imagem existente." });
+    const { nome, hora, descricao, status } = req.body;
+
+    if (!nome || !hora || !descricao || !status) {
+        return res.status(400).json({ error: "Todos os campos devem ser preenchidos." });
+    }
+
+    const sql = `UPDATE objeto SET nome_objeto = ?, hora_entrada = ?, descricao = ?, status = ?  WHERE id_objeto = ?`;
+
+    conn.query(sql, [nome, hora, descricao, status, id], (erro) => {
+        if (erro) {
+            console.error(erro);
+            res.status(500).json({ error: "Erro ao atualizar o objeto." });
+        } else {
+            res.status(200).json({ message: "Objeto atualizado com sucesso." });
         }
-
-        img = img || result[0]?.foto; // Usa a imagem existente se nenhuma nova for enviada
-
-        const sqlUpdate = `
-            UPDATE objeto 
-            SET nome_objeto = ?, hora_entrada = ?, descricao = ?, foto = ? 
-            WHERE id_objeto = ?
-        `;
-        conn.query(sqlUpdate, [nome, hora, descricao, img, id], (updateError) => {
-            if (updateError) {
-                console.log(updateError);
-                return res.status(500).json({ error: "Erro ao atualizar objeto." });
-            }
-            res.status(200).json({ message: "Produto atualizado com sucesso." });
-        });
     });
 });
+
+// Rota para buscar objetos por nome
+app.get("/objetos/buscar", (req, res) => {
+    const termo = req.query.termo;
+
+    if (!termo) {
+        return res.status(400).json({ error: "Termo de busca não fornecido." });
+    }
+
+    const sql = `SELECT * FROM objeto WHERE nome_objeto LIKE ?`;
+    const termoBusca = `%${termo}%`;
+
+    conn.query(sql, [termoBusca], (erro, resultados) => {
+        if (erro) {
+            console.error(erro);
+            res.status(500).json({ error: "Erro ao buscar objetos." });
+        } else {
+            res.status(200).json(resultados);
+        }
+    });
+});
+
+
+
 
 // Rota padrão
 app.get("/", (req, res) => {

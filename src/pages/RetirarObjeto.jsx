@@ -1,6 +1,6 @@
 import React from 'react';
 import { Document, Page, Text, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styles from './RetirarObjeto.module.css';
 
 // Estilos para o PDF
@@ -27,32 +27,36 @@ const estilosPDF = StyleSheet.create({
 const TermoResponsabilidade = () => (
   <Document>
     <Page size="A4" style={estilosPDF.pagina}>
-      <Text style={estilosPDF.titulo}>TERMO DE RESPONSABILIDADE</Text>
+      <Text style={estilosPDF.titulo}>
+        TERMO DE RESPONSABILIDADE PARA RETIRADA DE OBJETO
+      </Text>
       <Text style={estilosPDF.texto}>
-        {`Eu,__________________________________________________________
-_________________,CPF nº_________________________ RG nº__________________
-Órgão Exped.____________, telefone (_____)___________________, na falta de
-documentos para comprovação de residência, em conformidade com o disposto na Lei
-7.115, de 29 de agosto de 1983, DECLARO para os devidos fins, sob penas da Lei, ser
-residente e domiciliado no endereço ____________________________________________
-_________________________________________________________________________.
+        {`
+Eu, ____________________________________________________________, portador do CPF nº __________________________, e RG nº __________________________, residente e domiciliado no endereço __________________________________________________________, telefone para contato (_____) __________________________, declaro, sob as penas da lei, que:
 
-Por ser verdade, firmo a presente declaração para que produza os efeitos legais, ciente
-de que a falsidade de seu conteúdo pode implicar na imputação de sanções civis,
-administrativas, bem como na sanção penal prevista no art. 299 do Código Penal,
-conforme transcrição abaixo:
+1. Estou retirando o objeto descrito abaixo, devidamente identificado como pertencente ao sistema de Achados e Perdidos:
 
-Art. 299 – Omitir, em documento público ou particular, declaração que
-nele deveria constar, ou nele inserir ou fazer inserir declaração falsa ou
-diversa da que devia ser escrita, com o fim de prejudicar direito, criar
-obrigação ou alterar a verdade sobre fato juridicamente relevante.
-Pena: reclusão de 1 (um) a 5 (cinco) anos e multa, se o documento é
-público e reclusão de 1 (um) a 3 (três) anos, se o documento é particular.
+   - Descrição do Objeto: ______________________________________________________
+   - Data de Retirada: ___________________________________________________________
+   - Identificação/Protocolo: ____________________________________________________
 
-___________________________________, ________/________/__________.
-Local                                                                                                              Data
+2. Declaro estar ciente de que o objeto em questão foi identificado como sendo de minha responsabilidade, com base nas informações fornecidas previamente e/ou documentos apresentados.
 
-Assinatura do Declarante: ___________________________________________________`}
+3. Comprometo-me a verificar a integridade e autenticidade do objeto no ato da retirada e exonero o sistema de Achados e Perdidos de qualquer responsabilidade futura sobre o estado do mesmo após a retirada.
+
+4. Reconheço que qualquer tentativa de fraude, falsa declaração, ou uso indevido das informações prestadas neste termo poderá acarretar a aplicação das penalidades previstas nos artigos 171 e 299 do Código Penal, conforme descrito abaixo:
+
+   Art. 171 (Estelionato) – Obter, para si ou para outrem, vantagem ilícita, em prejuízo alheio, induzindo ou mantendo alguém em erro, mediante artifício, ardil, ou qualquer outro meio fraudulento.  
+   Pena: reclusão de 1 (um) a 5 (cinco) anos e multa.
+
+   Art. 299 (Falsidade ideológica) – Omitir, em documento público ou particular, declaração que nele deveria constar, ou nele inserir declaração falsa ou diversa da que devia ser escrita, com o fim de prejudicar direito, criar obrigação, ou alterar a verdade sobre fato juridicamente relevante.  
+   Pena: reclusão de 1 (um) a 5 (cinco) anos e multa, se o documento é público, e reclusão de 1 (um) a 3 (três) anos, se o documento é particular.
+
+5. Declaro que todas as informações prestadas são verdadeiras e assumo integral responsabilidade por quaisquer implicações legais decorrentes.
+
+Local e Data: _________________________________________________________________  
+Assinatura do Declarante: _______________________________________________________
+`}
       </Text>
     </Page>
   </Document>
@@ -60,9 +64,14 @@ Assinatura do Declarante: ___________________________________________________`}
 
 const RetirarObjeto = () => {
   const navigate = useNavigate();
-
-  const handleFinalizar = () => {
-    navigate('/home');
+   
+    const handlePDFClick = () => {
+      // Apenas lida com o clique para download do PDF, sem atualização de status
+      console.log('PDF gerado para download.');
+    };
+    
+  const handleFinalizar = async () => { 
+      navigate('/home');
   };
 
   return (
@@ -73,6 +82,7 @@ const RetirarObjeto = () => {
           document={<TermoResponsabilidade />}
           fileName="termo_de_responsabilidade.pdf"
           className={styles.linkPDF}
+          onClick={handlePDFClick}
         >
           {({ loading }) =>
             loading ? 'Carregando documento...' : 'Termo de Responsabilidade.pdf'
