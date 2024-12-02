@@ -24,17 +24,17 @@ create table objeto (
 
 INSERT INTO objeto (nome_objeto, hora_entrada, data_entrada, descricao, foto, status)
 VALUES
-('Garrafa Stanley', '10:00', '2024-11-12', 'Garrafa de metal grande', '1732543560489_garrafa-tupperware.jpg', DEFAULT),
+('Garrafa Stanley', '10:00', '2024-11-12', 'Garrafa de metal grande', '1732543160492_garrafa-stanley.jpg', DEFAULT),
 ('Garrafa Farm', '12:30', '2024-11-13', 'Garrafa rosa decorada', 'garrafa-farm.jpg', DEFAULT);
 
 INSERT INTO objeto (nome_objeto, hora_entrada, data_entrada, descricao, foto, status)
-VALUES ('Garrafa Pacco', '13:30', '2024-11-14', 'Garrafa azul marinho', '1732543506875_214795-800-450.jpg', DEFAULT),
+VALUES ('Garrafa Pacco', '13:30', '2024-11-14', 'Garrafa azul marinho', 'nova-garrafa-tupperware.jpg', DEFAULT),
   ('Garrafa Tupperware','17:15', '2024-11-15', 'Garrafa vermelho vinho', '1732543560489_garrafa-tupperware.jpg', DEFAULT);
   
 INSERT INTO usuario (nome_usuario, cpf_usuario, senha_usuario, tipo_usuario) 
 VALUES ('GUSTAVO RESERVA', '12345678901', '54321', 'administrador'),
-('GREGORY MELOSO', '40582493857', '67890', 'funcionario'),
-('CREUSA SOUZA', '7534283714', '12134', 'funcionario');
+('THIAGO', '40582493857', '67890', 'funcionario'),
+('DAVI SOUZA', '7534283714', '12134', 'funcionario');
  
 UPDATE objeto SET status = 'achado' WHERE id_objeto = 1;
 UPDATE objeto SET status = 'achado' WHERE id_objeto = 3;
@@ -43,7 +43,7 @@ SELECT foto FROM objeto WHERE id_objeto = 3;
 
 SELECT data_entrada FROM objeto WHERE id_objeto = 5;
 
-
-  SELECT * FROM objeto WHERE id_objeto = 1;
+UPDATE objeto SET data_entrada = '2023-10-09' WHERE id_objeto = 4;
+SELECT * FROM objeto WHERE id_objeto = 2;
 select * from usuario;
 select * from objeto;
