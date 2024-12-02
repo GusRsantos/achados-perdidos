@@ -96,6 +96,13 @@ const CadastrarObjeto = () => {
           value={hora}
           onChange={(e) => setHora(e.target.value)}
         />
+        <input
+          type="date"
+          placeholder="Horário de entrada"
+          value={hora}
+          onChange={(e) => setHora(e.target.value)}
+        />
+        
         <textarea
           placeholder="Descrição"
           value={descricao}

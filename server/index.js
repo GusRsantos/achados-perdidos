@@ -23,7 +23,7 @@ app.use("/images", express.static(path.join(__dirname, "/images")));
 const conn = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "Morningstar_20",
+    password: "SQL5625",
     database: "achadosperdidos"
 });
 
