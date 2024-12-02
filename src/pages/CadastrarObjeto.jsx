@@ -7,6 +7,7 @@ import { Form } from 'react-bootstrap';
 const CadastrarObjeto = () => {
   const [nome, setNome] = useState('');
   const [hora, setHora] = useState('');
+  const[dia, SetDia] = useState('');
   const [descricao, setDescricao] = useState('');
   const [img, setImagem] = useState(null);
   const [fotoPreview, setFotoPreview] = useState(null);
@@ -42,10 +43,11 @@ const CadastrarObjeto = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (nome && hora && descricao && img) {
+    if (nome && hora && dia && descricao && img) {
         const formData = new FormData();
         formData.append("nome", nome);
         formData.append("hora", hora);
+        formData.append("dia", dia);
         formData.append("descricao", descricao);
         formData.append("imagem", img); // Nome corrigido para coincidir com o backend
 
@@ -59,6 +61,7 @@ const CadastrarObjeto = () => {
                 alert("Produto cadastrado com sucesso!");
                 setNome("");
                 setHora("");
+                SetDia("");
                 setDescricao("");
                 setImagem(null);
                 setFotoPreview(null);
@@ -95,6 +98,12 @@ const CadastrarObjeto = () => {
           placeholder="Horário de entrada"
           value={hora}
           onChange={(e) => setHora(e.target.value)}
+        />
+         <input
+          type="date"
+          placeholder="Data"
+          value={dia}
+          onChange={(e) => SetDia(e.target.value)}
         />
         <textarea
           placeholder="Descrição"

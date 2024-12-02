@@ -139,7 +139,7 @@ app.get("/objetos", (req, res) => {
 
 // Rota para criar objetos
 app.post("/objetos/criar", (req, res) => {
-    const { nome, hora, descricao } = req.body;
+    const { nome, hora, dia, descricao } = req.body;
 
     if (!req.files || !req.files.imagem) {
         return res.status(400).json({ error: "Imagem é obrigatória." });
@@ -155,11 +155,10 @@ app.post("/objetos/criar", (req, res) => {
         }
 
         const sql = `
-            INSERT INTO objeto (nome_objeto, hora_entrada, descricao, foto)
-            VALUES (?, ?, ?, ?)
-        `;
+            INSERT INTO objeto (nome_objeto, hora_entrada, data_entrada, descricao, foto)
+            VALUES (?, ?, ?, ?, ?) `;
 
-        conn.query(sql, [nome, hora, descricao, imgNome], (erro) => {
+        conn.query(sql, [nome, hora, dia, descricao, imgNome], (erro) => {
             if (erro) {
                 console.log(erro);
                 res.status(500).json({ error: "Erro ao inserir no banco." });
@@ -214,15 +213,15 @@ app.put("/objetos/editar/:id", (req, res) => {
         return res.status(400).json({ error: "ID inválido." });
     }
 
-    const { nome, hora, descricao, status } = req.body;
+    const { nome, hora, dia, descricao, status } = req.body;
 
-    if (!nome || !hora || !descricao || !status) {
+    if (!nome || !hora || !dia || !descricao || !status) {
         return res.status(400).json({ error: "Todos os campos devem ser preenchidos." });
     }
 
-    const sql = `UPDATE objeto SET nome_objeto = ?, hora_entrada = ?, descricao = ?, status = ?  WHERE id_objeto = ?`;
+    const sql = `UPDATE objeto SET nome_objeto = '${nome}', hora_entrada = '${hora}', data_entrada = '${dia}', descricao = '${descricao}', status = '${status}'  WHERE id_objeto = '${id}' `;
 
-    conn.query(sql, [nome, hora, descricao, status, id], (erro) => {
+    conn.query(sql, [nome, hora, dia, descricao, status, id], (erro) => {
         if (erro) {
             console.error(erro);
             res.status(500).json({ error: "Erro ao atualizar o objeto." });

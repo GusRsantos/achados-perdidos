@@ -56,6 +56,7 @@ export default function InfoObjetos() {
         body: JSON.stringify({
           nome: objetoAtual.nome_objeto, // Nome do objeto
           hora: objetoAtual.hora_entrada, // Hora de entrada
+          dia: objetoAtual.data_entrada,
           descricao: objetoAtual.descricao, // Descrição (caso seja necessário)
           status: objetoAtual.status
         }),
@@ -109,6 +110,14 @@ export default function InfoObjetos() {
                 type="time"
                 name="hora_entrada"
                 value={objetoAtual.hora_entrada || ''}
+                onChange={handleChange}
+                readOnly={!isEditing}
+                className={styles.input}
+              />
+              <input
+                type="date"
+                name="data_entrada"
+                value={objetoAtual.data_entrada || ''}
                 onChange={handleChange}
                 readOnly={!isEditing}
                 className={styles.input}
