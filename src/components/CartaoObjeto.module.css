@@ -73,6 +73,17 @@
   font-size: 14px;
   margin-top: 8px;
 }
+.deleteButton {
+  width: 100%;
+  background-color:  #ff0000;
+  color: white;
+  border: none;
+  padding: 8px 0;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 8px;
+}
 
 .selectButton:hover {
   background-color: #002266;

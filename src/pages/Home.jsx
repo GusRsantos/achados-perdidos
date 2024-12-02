@@ -43,6 +43,12 @@ const Home = () => {
     fetchData();
   }, []);
 
+
+    // Função para remover um objeto do estado
+    const handleDeleteObject = (id) => {
+      setObjetos(objetos.filter((objeto) => objeto.id_objeto !== id));
+    };
+
   return (
     <div className={styles.container}>
       <button onClick={handleSubmitObject} className={styles.addButton}>
@@ -103,6 +109,7 @@ const Home = () => {
             status={obj.status}
             imagemUrl={`http://localhost:5000/images/${obj.foto}`}
             Selecionar={() => handleSelect(obj.id_objeto)}
+            onDelete={handleDeleteObject}
           />
         ))}
       </div>

@@ -19,7 +19,15 @@ export default function InfoObjetos() {
         console.log("Dados retornados pela API:", data);
 
         if (data) {
-          setObjetoAtual(data[0]); // Ajuste aqui se a API já retorna o objeto diretamente
+          const objeto = data[0]; // Ajuste aqui se a API já retorna o objeto diretamente
+
+          // Conversão da data de dd-mm-yyyy para yyyy-mm-dd
+          if (objeto.data_entrada) {
+            const partesData = objeto.data_entrada.split('-');
+            objeto.data_entrada = `${partesData[2]}-${partesData[1]}-${partesData[0]}`;
+          }
+
+          setObjetoAtual(objeto);
         }
       } catch (error) {
         console.error("Erro ao buscar dados do objeto:", error);
@@ -28,6 +36,7 @@ export default function InfoObjetos() {
 
     fetchObjectData();
   }, [id]);
+
 
 
   const handleVoltar = () => {

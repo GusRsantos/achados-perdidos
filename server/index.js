@@ -23,7 +23,7 @@ app.use("/images", express.static(path.join(__dirname, "/images")));
 const conn = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "SQL5625",
+    password: "",
     database: "achadosperdidos"
 });
 
@@ -170,35 +170,64 @@ app.post("/objetos/criar", (req, res) => {
 });
 
 // Rota para deletar um produto
-app.get("/objetos/excluir/:id", (req, res) => {
+app.delete("/objetos/excluir/:id", (req, res) => {
     const id = req.params.id;
-
+  
+    // Validar se o ID foi fornecido
+    if (!id || isNaN(id)) {
+      return res.status(400).json({ error: "ID inválido ou não fornecido." });
+    }
+  
     const sql = `DELETE FROM objeto WHERE id_objeto = ?`;
-
+  
     conn.query(sql, [id], (erro) => {
-        if (erro) {
-            console.log(erro);
-            res.status(500).json(erro.sqlMessage).end();
-        } else {
-            res.status(200).json("Produto deletado com sucesso").end();
-        }
+      if (erro) {
+        console.error(erro);
+        res.status(500).json({ error: erro.sqlMessage }).end();
+      } else {
+        res.status(200).json({ message: "Objeto deletado com sucesso", id }).end();
+      }
     });
-});
+  });
+  
+
 
 // Rota para selecionar um objeto
 app.get("/objetos/edicao/:id", (req, res) => {
     const id = req.params.id;
 
     const sql = `SELECT * FROM objeto WHERE id_objeto = ?`;
-
     conn.query(sql, [id], (erro, dados) => {
         if (erro) {
             console.log(erro);
-            res.status(500).json(erro.sqlMessage).end();
+            res.status(500).json(erro.message).end();
         } else {
+            // Verificando se dados contém registros
+            if (dados.length > 0) {
+                // Aqui, vamos formatar a data
+                dados.forEach(item => {
+                    if (item.data_entrada) {
+                        // A data está no formato ISO 8601, então criamos um objeto Date
+                        let data_entrada = new Date(item.data_entrada);
+                        
+                        // Formatando como dd-mm-yyyy
+                        item.data_entrada = `${data_entrada.getDate().toString().padStart(2, '0')}-${(data_entrada.getMonth() + 1).toString().padStart(2, '0')}-${data_entrada.getFullYear()}`;
+                    }
+                });
+            }
             res.status(200).json(dados).end();
         }
     });
+
+
+    // conn.query(sql, [id], (erro, dados) => {
+    //     if (erro) {
+    //         console.log(erro);
+    //         res.status(500).json(erro.message).end();
+    //     } else {
+    //         res.status(200).json(dados).end();
+    //     }
+    // });
 });
 
 
