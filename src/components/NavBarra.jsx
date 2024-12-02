@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Container, Nav } from 'react-bootstrap';
 import { FaUsers, FaSignOutAlt } from 'react-icons/fa';
@@ -9,9 +9,17 @@ const NavBarra = () => {
   const navigate = useNavigate();
   const [termoBusca, setTermoBusca] = useState("");
   const [sugestoes, setSugestoes] = useState([]);
+  const [userType, setUserType] = useState(null);
+
+  useEffect(() => {
+    // Recupera o tipo de usuário do localStorage
+    const storedUserType = localStorage.getItem('userType');
+    setUserType(storedUserType);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('userType'); // Remove o tipo de usuário também
     navigate('/');
   };
 
@@ -23,7 +31,6 @@ const NavBarra = () => {
     navigate('/listausuarios');
   };
 
-  // Função para buscar objetos no backend
   const buscarObjetos = async (termo) => {
     if (!termo) {
       setSugestoes([]);
@@ -39,7 +46,6 @@ const NavBarra = () => {
     }
   };
 
-  // Função para lidar com a entrada de texto na busca
   const handleChange = (e) => {
     const termo = e.target.value;
     setTermoBusca(termo);
@@ -61,17 +67,16 @@ const NavBarra = () => {
             onChange={handleChange}
           />
           <button className={styles.searchButton}>
-            <img 
-              src={"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxjaXJjbGUgY3g9IjExIiBjeT0iMTEiIHI9IjgiPjwvY2lyY2xlPjxsaW5lIHgxPSIyMSIgeTE9IjIxIiB4Mj0iMTYuNjUiIHkyPSIxNi42NSI+PC9saW5lPjwvc3ZnPg=="} 
+            <img
+              src={"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxjaXJjbGUgY3g9IjExIiBjeT0iMTEiIHI9IjgiPjwvY2lyY2xlPjxsaW5lIHgxPSIyMSIgeTE9IjIxIiB4Mj0iMTYuNjUiIHkyPSIxNi42NSI+PC9saW5lPjwvc3ZnPg=="} // Ícone de busca em Base64
               alt="Buscar"
               className={styles.searchIcon}
             />
           </button>
-          {/* Dropdown de sugestões */}
           {sugestoes.length > 0 && (
             <ul className={styles.suggestions}>
               {sugestoes.map((sugestao) => (
-                <li 
+                <li
                   key={sugestao.id_objeto}
                   onClick={() => navigate(`/infoobjetos/${sugestao.id_objeto}`)}
                   className={styles.suggestionItem}
@@ -83,19 +88,18 @@ const NavBarra = () => {
           )}
         </div>
 
-        <Navbar.Toggle 
-          aria-controls="navbar-nav" 
-          className={styles.toggleButton}
-        >
+        <Navbar.Toggle aria-controls="navbar-nav" className={styles.toggleButton}>
           <span className={styles.hamburgerIcon}></span>
         </Navbar.Toggle>
 
         <Navbar.Collapse id="navbar-nav">
           <Nav className="ms-auto">
-            <Nav.Link onClick={handleUsuarios} className={styles.navLink}>
-              <FaUsers className={styles.navIcon} />
-              Usuários
-            </Nav.Link>
+            {userType === 'administrador' && (
+              <Nav.Link onClick={handleUsuarios} className={styles.navLink}>
+                <FaUsers className={styles.navIcon} />
+                Usuários
+              </Nav.Link>
+            )}
             <Nav.Link onClick={handleLogout} className={styles.navLink}>
               <FaSignOutAlt className={styles.navIcon} />
               Sair

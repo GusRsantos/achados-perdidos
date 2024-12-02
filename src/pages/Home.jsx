@@ -53,30 +53,44 @@ const Home = () => {
         <div className={styles.legendItem}>
           <button
             onClick={() => btnFilter("achado")}
-            className={`${styles.btnAchado} ${
+            className={styles.btnAchado}
+          ></button>
+          <span
+            onClick={() => btnFilter("achado")}
+            className={`${styles.legendText} ${
               filtroStatus === "achado" ? styles.active : ""
             }`}
-          ></button>
-          Achado
+          >
+            Achado
+          </span>
         </div>
         <div className={styles.legendItem}>
           <button
             onClick={() => btnFilter("perdido")}
-            className={`${styles.btnPerdido} ${
+            className={styles.btnPerdido}
+          ></button>
+          <span
+            onClick={() => btnFilter("perdido")}
+            className={`${styles.legendText} ${
               filtroStatus === "perdido" ? styles.active : ""
             }`}
-          ></button>
-          Perdido
+          >
+            Perdido
+          </span>
         </div>
         <div className={styles.legendItem}>
           <button
             onClick={() => setFiltroStatus(null)} // Reseta o filtro
-            className={`${styles.btnMostrarTodos} ${
-              filtroStatus === "todos" ? styles.active : ""
+            className={styles.btnMostrarTodos}
+          ></button>
+          <span
+            onClick={() => setFiltroStatus(null)}
+            className={`${styles.legendText} ${
+              filtroStatus === null ? styles.active : ""
             }`}
           >
-            Mostrar Todos
-          </button>
+            Todos
+          </span>
         </div>
       </div>
 
