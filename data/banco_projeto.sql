@@ -33,8 +33,9 @@ VALUES ('Garrafa Pacco', '13:30', '2024-11-14', 'Garrafa azul marinho', 'nova-ga
   
 INSERT INTO usuario (nome_usuario, cpf_usuario, senha_usuario, tipo_usuario) 
 VALUES ('GUSTAVO RESERVA', '12345678901', '54321', 'administrador'),
-('THIAGO', '40582493857', '67890', 'funcionario'),
-('DAVI SOUZA', '7534283714', '12134', 'funcionario');
+('SAMUEL', '40582493857', '67890', 'funcionario'),
+('DAVI', '7534283714', '12134', 'funcionario'),
+('MARCUS', '10987654321', '12345', 'funcionario');
  
 UPDATE objeto SET status = 'achado' WHERE id_objeto = 1;
 UPDATE objeto SET status = 'achado' WHERE id_objeto = 3;

@@ -23,7 +23,7 @@ app.use("/images", express.static(path.join(__dirname, "/images")));
 const conn = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "",
+    password: "SQL5625",
     database: "achadosperdidos"
 });
 
@@ -69,7 +69,7 @@ app.get("/usuario/entrar", (req, res) => {
             if (result.length === 0) {
                 res.status(500).json("Usuário ou senha incorretos").end();
             } else {
-                res.status(200).json(result).end();
+                res.status(200).json(result).end(   );
             }
         }
     });
