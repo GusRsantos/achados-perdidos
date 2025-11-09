@@ -48,3 +48,5 @@ UPDATE objeto SET data_entrada = '2023-10-09' WHERE id_objeto = 4;
 SELECT * FROM objeto WHERE id_objeto = 2;
 select * from usuario;
 select * from objeto;
+
+

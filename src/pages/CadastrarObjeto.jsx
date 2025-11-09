@@ -79,7 +79,7 @@ const CadastrarObjeto = () => {
     }
 };
 
-  
+  /*kklklklk;*/
 
   return (
     <div className={styles.container}>
@@ -139,3 +139,4 @@ const CadastrarObjeto = () => {
 };
 
 export default CadastrarObjeto;
+!
